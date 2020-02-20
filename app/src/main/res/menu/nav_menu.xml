@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item android:title="Flashcards">
+
+            <menu>
+
+                <item android:id="@+id/title1"
+                    android:title="All sets "
+                    android:icon="@drawable/ic_view_agenda"/>
+
+                <item android:id="@+id/title2"
+                    android:title="Most used"
+                    android:icon="@drawable/ic_star"/>
+
+            </menu>
+
+        </item>
+
+        <item android:id="@+id/bakupRestore"
+            android:title="Backup and restore"
+            android:icon="@drawable/ic_cached"/>
+
+        <item android:id="@+id/trash"
+            android:title="Trash"
+            android:icon="@drawable/ic_delete_sweep"/>
+
+    </group>
+
+
+        <item android:title="Labels">
+
+            <menu >
+
+                <item android:id="@+id/important"
+                    android:title="Important"
+                    android:icon="@drawable/ic_label_black"/>
+
+                <item android:id="@+id/todo"
+                    android:title="Todo"
+                    android:icon="@drawable/ic_label_black"/>
+
+                <item android:id="@+id/dictionary"
+                    android:title="Dictionary"
+                    android:icon="@drawable/ic_label_black"/>
+
+            </menu>
+
+        </item>
+
+
+    <item android:title="@string/help">
+
+        <menu>
+
+         <item android:title="Help"
+             android:icon="@drawable/ic_help"
+             android:id="@+id/hepl"/>
+
+
+         <item android:title="About"
+             android:icon="@drawable/ic_detail"
+             android:id="@+id/about"/>
+
+        </menu>
+
+    </item>
+
+
+
+</menu>

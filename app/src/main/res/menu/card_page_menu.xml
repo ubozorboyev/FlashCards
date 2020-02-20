@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:title="Movte to Trash"
+        android:id="@+id/trash"/>
+
+    <item android:title="Save and go back"
+        android:id="@+id/saveBack"/>
+
+    <item android:title="Add label"
+        android:id="@+id/addLabel"/>
+
+    <item android:title="Statistics"
+        android:id="@+id/statistics"/>
+
+    <item android:id="@+id/editTextItem"
+        android:title="EditText"
+        android:icon="@drawable/ic_edit_black"/>
+
+
+    <item
+        app:showAsAction="always"
+        android:icon="@drawable/ic_color_lens"
+        android:title="Change color"
+        android:id="@+id/changeColor"/>
+
+
+</menu>

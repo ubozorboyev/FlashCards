@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:title="set text"
+        android:id="@+id/textPop"/>
+
+
+    <item
+        android:title="take photo"
+        android:id="@+id/takePhoto"/>
+
+    <item
+        android:title="Choose image"
+        android:id="@+id/chooseImage"/>
+
+    <item
+        android:title="Drawing"
+        android:id="@+id/drawing"/>
+
+</menu>

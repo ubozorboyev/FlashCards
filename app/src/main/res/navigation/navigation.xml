@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/allSetsFragment">
+
+    <fragment
+        tools:layout="@layout/allsets_fragment"
+        android:id="@+id/allSetsFragment"
+        android:name="com.example.flashcards.ui.screens.AllSetsFragment"
+        android:label="AllSetsFragment" >
+
+        <action
+            android:id="@+id/action_allSetsFragment_to_cardPageFragment"
+            app:destination="@id/cardPageFragment" />
+
+    </fragment>
+
+    <fragment
+        tools:layout="@layout/card_page_fragment"
+        android:id="@+id/cardPageFragment"
+        android:name="com.example.flashcards.ui.screens.CardPageFragment"
+        android:label="CardPageFragment" >
+
+       <!-- <argument android:name="flashId"
+            app:argType="interger"
+            android:defaultValue="true"
+            app:nullable="false"/>-->
+
+    </fragment>
+</navigation>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:orientation="vertical"
+        tools:context="ui.screens.CardPageFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/appBar"
+            layout="@layout/toolbar_layout"/>
+
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:src="@drawable/ic_style_black"
+            android:layout_marginBottom="@dimen/pageMargin"
+            app:layout_constraintTop_toBottomOf="@id/appBar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/freamLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclview"
+            tools:listitem="@layout/card_item"
+            android:orientation="horizontal"
+            android:layout_marginBottom="@dimen/pageMargin"
+            app:layout_constraintTop_toBottomOf="@id/appBar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/freamLayout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp"
+            android:id="@+id/freamLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/recyclview"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/playCard"
+                app:elevation="0dp"
+                android:src="@drawable/ic_play_arrow"
+                android:layout_marginRight="@dimen/pageMargin"
+                android:elevation="0dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:backgroundTint="#F12626" />
+
+
+
+<!--
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/bookCard"
+                app:elevation="0dp"
+                android:elevation="0dp"
+                android:layout_gravity="center"
+                android:backgroundTint="#F12626"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+-->
+
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/addCard"
+                android:layout_gravity="center"
+                app:elevation="0dp"
+                android:elevation="0dp"
+                android:backgroundTint="#F12626"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_add_black" />
+
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
