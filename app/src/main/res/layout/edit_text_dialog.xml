@@ -11,10 +11,11 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editText"
+            android:padding="8dp"
             android:textSize="20sp"
-            android:keyboardNavigationCluster="true"
             android:textColor="#000000"
             android:inputType="text"
+            android:focusableInTouchMode="true"
             android:typeface="normal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -26,7 +27,7 @@
 
 
     <LinearLayout
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:gravity="end"
         android:orientation="horizontal"
         android:layout_width="match_parent"

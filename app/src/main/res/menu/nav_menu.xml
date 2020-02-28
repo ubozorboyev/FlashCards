@@ -19,13 +19,21 @@
 
         </item>
 
-        <item android:id="@+id/bakupRestore"
-            android:title="Backup and restore"
-            android:icon="@drawable/ic_cached"/>
+        <item android:title="@string/bakup">
 
-        <item android:id="@+id/trash"
-            android:title="Trash"
-            android:icon="@drawable/ic_delete_sweep"/>
+            <menu >
+
+                <item android:id="@+id/bakupRestore"
+                    android:title="Backup and restore"
+                    android:icon="@drawable/ic_cached"/>
+
+                <item android:id="@+id/trash"
+                    android:title="Trash"
+                    android:icon="@drawable/ic_delete_sweep"/>
+
+            </menu>
+
+        </item>
 
     </group>
 

@@ -1,23 +1,20 @@
-package com.example.flashcards.ui.screens
+package com.example.flashcards.ui.fragments
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.widget.FrameLayout
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.flashcards.App
 import com.example.flashcards.R
@@ -27,8 +24,10 @@ import com.example.flashcards.gotoCardPage
 import com.example.flashcards.models.FlashCardData
 import com.example.flashcards.ui.viewmodel.AllSetsViewModel
 import com.google.android.material.navigation.NavigationView
-import kotlinx.android.synthetic.main.toolbar_layout.*
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.toolbar_layout.view.*
+import java.net.URL
 import javax.inject.Inject
 
 class AllSetsFragment: BaseFragment< AllsetsFragmentBinding>
@@ -52,8 +51,9 @@ class AllSetsFragment: BaseFragment< AllsetsFragmentBinding>
 
          val toolbar=binding.appBar as Toolbar
         (activity as AppCompatActivity).setSupportActionBar(toolbar)
-        toolbar.textInputLayout.visibility=View.GONE
-        (activity as AppCompatActivity).supportActionBar?.setTitle("All Sets")
+        binding.appBar.imageBack.visibility=View.GONE
+
+        binding.appBar.actionBarTitle.setText("All Sets")
 
         toolbar.setNavigationIcon(R.drawable.ic_menu)
         toolbar.setNavigationOnClickListener { binding.drawerLayout.openDrawer(GravityCompat.START) }
@@ -66,7 +66,6 @@ class AllSetsFragment: BaseFragment< AllsetsFragmentBinding>
     fun obseravbleAndLiveData(){
 
         viewModel.allFlashCards.observe(this, Observer {
-            Log.d("TTT","flashCard List $it")
             adapter.list.clear()
             adapter.list.addAll(it)
             adapter.notifyDataSetChanged()
@@ -103,20 +102,25 @@ class AllSetsFragment: BaseFragment< AllsetsFragmentBinding>
                 bundle.putString("NAME",flash.name)
                 bundle.putInt("COLOR",flash.backgroundColor)
                 gotoCardPage(bundle)
-
             }
         }
 
         binding.fabButton.setOnClickListener {
             val flashCardData=FlashCardData(0,"Unititel set",0)
              viewModel.addFlashCards(flashCardData)
-             bundle.clear()
-             bundle.putInt("ID",flashId)
-             bundle.putInt("COLOR",flashCardData.backgroundColor)
+                 .observeOn(AndroidSchedulers.mainThread())
+                 .subscribeOn(Schedulers.io())
+                 .subscribe({
+                     flashId=it.toInt()
+                     bundle.clear()
+                     bundle.putInt("ID",flashId)
+                     bundle.putInt("COLOR",flashCardData.backgroundColor)
+                     gotoCardPage(bundle)
 
-            Log.d("TTT","bundle ${bundle.getInt("ID")}")
+                 },{
 
-            gotoCardPage(bundle)
+                 })
+
         }
     }
 
@@ -138,13 +142,41 @@ class AllSetsFragment: BaseFragment< AllsetsFragmentBinding>
     override fun onNavigationItemSelected(p0: MenuItem): Boolean {
 
         when(p0.itemId){
-            R.id.title1->Toast.makeText(context!!,"menu item click",Toast.LENGTH_SHORT).show()
 
+            R.id.title1, R.id.title2->{
+
+            }
+
+            R.id.trash->{
+                findNavController().navigate(R.id.action_allSetsFragment_to_trashFragment)
+            }
+
+            R.id.important->{
+                bundle.clear()
+                bundle.putInt("LABEL",1)
+                findNavController().navigate(R.id.action_allSetsFragment_to_labelFragment,bundle)
+            }
+            R.id.todo->{
+                bundle.clear()
+                bundle.putInt("LABEL",2)
+                findNavController().navigate(R.id.action_allSetsFragment_to_labelFragment,bundle)
+            }
+            R.id.dictionary->{
+                bundle.clear()
+                bundle.putInt("LABEL",3)
+                findNavController().navigate(R.id.action_allSetsFragment_to_labelFragment,bundle)
+            }
+            R.id.hepl->{
+
+            }
+            R.id.about->{
+//                activity?.startService(Intent("https://tuit.uz"))
+            }
         }
 
         binding.drawerLayout.closeDrawer(GravityCompat.START)
 
-     return  true
+         return  true
     }
 
     override fun onClick(v: View?) {

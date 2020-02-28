@@ -1,4 +1,4 @@
-package com.example.flashcards.ui.screens
+package com.example.flashcards.ui.fragments
 
 import android.app.Activity
 import android.content.Context
@@ -7,7 +7,8 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.os.Environment
-import android.os.Handler
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
@@ -19,7 +20,9 @@ import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -27,9 +30,11 @@ import com.divyanshu.draw.activity.DrawingActivity
 import com.example.flashcards.App
 import com.example.flashcards.R
 import com.example.flashcards.adapters.CardAdapter
+import com.example.flashcards.adapters.CardDiffuclCallback
 import com.example.flashcards.databinding.CardPageFragmentBinding
 import com.example.flashcards.dialogs.ColorPicerDialog
 import com.example.flashcards.dialogs.EditTextDialog
+import com.example.flashcards.dialogs.LabelDialog
 import com.example.flashcards.dialogs.SetTextItemDialog
 import com.example.flashcards.getSnapPosition
 import com.example.flashcards.models.CardData
@@ -58,6 +63,7 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
     private var isDelete:Boolean=false
     @Inject
     lateinit var viewModel: CardPageViewModel
+    private lateinit var flashCardData:FlashCardData
 
 
     override fun onAttach(context: Context) {
@@ -73,22 +79,59 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
         flashCardId = arguments!!.getInt("ID")
         title.value = arguments!!.getString("NAME", "Untitle set")
         adapter.bgColor=arguments!!.getInt("COLOR")
-        toolbar = binding.appBar as Toolbar
 
-        (activity as AppCompatActivity).setSupportActionBar(toolbar)
-
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
-        toolbar.inflateMenu(R.menu.card_page_menu)
 
         viewModel.getCardsByFlashCard(flashCardId)
+        viewModel.getFlashCard(flashCardId)
 
+        viewModel.flashCard.observe(viewLifecycleOwner, Observer {
+            flashCardData=it
+        })
+
+        setActionBar()
         clickListeners()
         init()
         adapterListener()
     }
 
-    fun init() {
 
+    fun setActionBar(){
+        toolbar = binding.appBar as Toolbar
+        (activity as AppCompatActivity).setSupportActionBar(toolbar)
+
+        toolbar.inflateMenu(R.menu.card_page_menu)
+
+        title.observe(viewLifecycleOwner, Observer {
+            binding.appBar.actionBarTitle.setText(it)
+        })
+
+        binding.appBar.actionBarTitle.visibility=View.GONE
+        binding.appBar.editTextTitle.visibility=View.VISIBLE
+        binding.appBar.editTextTitle.setText(title.value)
+
+        binding.appBar.editTextTitle.addTextChangedListener(object :TextWatcher{
+
+            override fun afterTextChanged(s: Editable?) {
+                if (!s.isNullOrEmpty()){
+                    title.value=s.toString()
+                }else{
+                    title.value="Unititel set"
+                }
+
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                Log.d("TTTT","beforeTextChanged ${s.toString()}")
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                Log.d("TTTT","onTextChanged ${s.toString()}")
+            }
+        })
+
+    }
+
+    fun init() {
 
         val aplhaadapter = AlphaInAnimationAdapter(adapter)
 
@@ -104,7 +147,7 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
 
         snapView = snapHelper.findSnapView(binding.recyclview.layoutManager)
 
-        viewModel.allCards.observe(this, androidx.lifecycle.Observer {
+        viewModel.allCards.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
 
             if (adapter.cardList.isEmpty()){
                 adapter.cardList.addAll(it)
@@ -135,7 +178,7 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
                         adapter.cardList[positon].backImage= null
                         adapter.cardList[positon].backText= it
                     }
-                    adapter.notifyItemChanged(positon)
+                    adapter.notifyItemRangeChanged(positon,1)
                 }
             }
         }
@@ -160,18 +203,20 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
     fun clickListeners() {
 
         binding.addCard.setOnClickListener(this)
-
         binding.playCard.setOnClickListener(this)
+        binding.appBar.imageBack.setOnClickListener(this)
+        binding.appBar.editTextTitle.setOnClickListener(this)
 
-        toolbar.setNavigationOnClickListener{
-            activity?.onBackPressed()
-        }
 
         requireActivity().onBackPressedDispatcher.addCallback(this){
 
             viewModel.updateCards(adapter.cardList)
 
-            viewModel.updateFlashCardById(FlashCardData(flashCardId,title.value!!,adapter.cardList.size,adapter.bgColor,isDelete))
+            flashCardData.backgroundColor=adapter.bgColor
+            flashCardData.cardCount=adapter.cardList.size
+            flashCardData.name=title.value!!
+            flashCardData.isDelete=isDelete
+            viewModel.updateFlashCardById(flashCardData)
             findNavController().popBackStack()
         }
     }
@@ -195,6 +240,18 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
             }
             R.id.saveBack->{
                 activity?.onBackPressed()
+            }
+            R.id.addLabel->{
+
+                val dialog=LabelDialog(context!!,object :CheckLabelInterface{
+                    override fun setLabelCardData(flashCardData: FlashCardData) {
+                        viewModel.updateFlashCardById(flashCardData)
+                    }
+
+                },flashCardData)
+
+                dialog.show()
+
             }
         }
 
@@ -260,7 +317,13 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
 
                 val snapPosition = LinearSnapHelper().getSnapPosition(binding.recyclview)
 
-                 val cardData=CardData(0,flashCardId,"Foreground Text",null,"Backgrount Text", null)
+                 val cardData=CardData(
+                     0,
+                     flashCardId,
+                     "Example front side of a flashcard, you can add text image or drawing",
+                     null,
+                     "Example back side of a flashcard, you can add text image or drawing",
+                     null)
 
                     viewModel.inserCard(cardData).subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
@@ -274,6 +337,13 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
             }
 
             R.id.playCard -> {
+
+            }
+            R.id.imageBack->{
+                activity?.onBackPressed()
+            }
+            R.id.editTextTitle->{
+              binding.appBar.editTextTitle.isFocusableInTouchMode=true
 
             }
         }
@@ -306,16 +376,16 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
         outputStream.flush()
         outputStream.close()
 
+        Log.d("SSSS","saveImage  isOpen ${adapter.isOpen}")
+
         if (adapter.isOpen){
 
             adapter.cardList[REQUEST_CODE_DRAW].forImage=file.absolutePath
             adapter.cardList[REQUEST_CODE_DRAW].forText=""
         } else {
-
             adapter.cardList[REQUEST_CODE_DRAW].backImage=file.absolutePath
             adapter.cardList[REQUEST_CODE_DRAW].backText=""
         }
-
         adapter.notifyItemChanged(REQUEST_CODE_DRAW)
     }
 
@@ -324,4 +394,8 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
         viewModel.onDestroy()
     }
 
+}
+
+interface CheckLabelInterface{
+    fun setLabelCardData(flashCardData: FlashCardData)
 }

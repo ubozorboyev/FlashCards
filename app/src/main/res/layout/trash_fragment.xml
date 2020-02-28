@@ -1,13 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
-        xmlns:tools="http://schemas.android.com/tools"
-        tools:context=".ui.screens.TrashFragment"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        tools:context=".ui.fragments.TrashFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
 
+        <include layout="@layout/toolbar_layout"
+            android:id="@+id/appBar"/>
 
-    </LinearLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:orientation="vertical"
+            app:layout_goneMarginTop="@dimen/pageMargin"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/appBar"
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclview"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:layoutAnimation="@anim/trash_layout_animation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:listitem="@layout/trash_item" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"/>
+
+            </LinearLayout>
+
+
+        </androidx.core.widget.NestedScrollView>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

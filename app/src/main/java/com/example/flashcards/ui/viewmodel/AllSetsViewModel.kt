@@ -13,9 +13,9 @@ class AllSetsViewModel @Inject constructor(val repository: AllSetsRepository) :V
     val isAddFlashCards:LiveData<Int> =repository._isAddFlashCard
     val getFlashCard:LiveData<FlashCardData> =repository._flashCardData
 
-    fun addFlashCards(flashCardData: FlashCardData){
+    fun addFlashCards(flashCardData: FlashCardData)=
         repository.addFlashCard(flashCardData)
-    }
+
 
     fun getFlashCardById(id:Int){
 //        repository.getFlashCardById(id)

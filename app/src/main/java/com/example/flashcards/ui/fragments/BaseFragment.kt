@@ -1,16 +1,13 @@
-package com.example.flashcards.ui.screens
+package com.example.flashcards.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.addCallback
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import javax.inject.Singleton
 
 
 abstract class BaseFragment<DB:ViewDataBinding>(@LayoutRes val layoutRes:Int) :Fragment(){

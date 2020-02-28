@@ -16,9 +16,20 @@ interface FlashCardDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addFlashCard(flashCardData: FlashCardData):Single<Long>
 
-    @Query("DELETE  FROM flash_card_data WHERE id=:flashId")
-    fun deleteFlashCardData(flashId:Int)
+    @Delete(entity = FlashCardData::class)
+    fun deleteFlashCardData(flashCardData: FlashCardData)
+    
+    @Query("SELECT * FROM flash_card_data WHERE isDelete=1")
+    fun getDeleteCard():Flowable<List<FlashCardData>>
 
+    @Query("SELECT * FROM flash_card_data WHERE isImportant AND isDelete=0")
+    fun getAllImportant():Flowable<List<FlashCardData>>
+
+    @Query("SELECT * FROM flash_card_data WHERE isDictionary AND isDelete=0")
+    fun getAllDictionary():Flowable<List<FlashCardData>>
+
+    @Query("SELECT * FROM flash_card_data WHERE isTodo AND isDelete=0")
+    fun getAllTodo():Flowable<List<FlashCardData>>
 }
 
 @Dao
@@ -28,7 +39,7 @@ interface CardDao{
     fun getFlashByCardData(cardId:Int):Flowable<List<CardData>>
 
     @Query("SELECT * FROM flash_card_data WHERE id=:id")
-    fun getFlashCard(id: Int):Flowable<FlashCardData>
+    fun getFlashCard(id: Long):Flowable<FlashCardData>
 
     @Update
     fun updateFlashCard(flashCardData: FlashCardData)

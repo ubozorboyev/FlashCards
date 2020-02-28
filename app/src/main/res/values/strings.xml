@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">FlashCards</string>
     <string name="help">Help &amp; Support</string>
+    <string name="bakup">Restore &amp; Trash</string>
+    <string name="important">important</string>
+    <string name="dictionary">dictionary</string>
+    <string name="todo">todo</string>
 
     <array  name="colorsList">
         <item name="color_1">#F7E378</item>

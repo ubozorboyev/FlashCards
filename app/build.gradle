@@ -6,7 +6,7 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
-//apply plugin: "org.jetbrains.kotlin.kapt"
+
 
 
 android {
@@ -31,7 +31,6 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
-
     }
 
     dataBinding {
@@ -70,10 +69,6 @@ dependencies {
     implementation "com.google.dagger:dagger:2.25.4"
     kapt 'com.google.dagger:dagger-compiler:2.25.4'
     kapt "com.google.dagger:dagger-android-processor:2.16"
-
-
-    //kapt
-//    kapt('com.android.databinding:compiler:3.1.4')
 
 
     implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'

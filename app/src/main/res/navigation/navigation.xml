@@ -8,19 +8,26 @@
     <fragment
         tools:layout="@layout/allsets_fragment"
         android:id="@+id/allSetsFragment"
-        android:name="com.example.flashcards.ui.screens.AllSetsFragment"
+        android:name="com.example.flashcards.ui.fragments.AllSetsFragment"
         android:label="AllSetsFragment" >
 
         <action
             android:id="@+id/action_allSetsFragment_to_cardPageFragment"
             app:destination="@id/cardPageFragment" />
+        <action
+            android:id="@+id/action_allSetsFragment_to_trashFragment"
+            app:destination="@id/trashFragment" />
+        <action
+            android:id="@+id/action_allSetsFragment_to_labelFragment"
+            app:destination="@id/labelFragment" />
+
 
     </fragment>
 
     <fragment
         tools:layout="@layout/card_page_fragment"
         android:id="@+id/cardPageFragment"
-        android:name="com.example.flashcards.ui.screens.CardPageFragment"
+        android:name="com.example.flashcards.ui.fragments.CardPageFragment"
         android:label="CardPageFragment" >
 
        <!-- <argument android:name="flashId"
@@ -29,4 +36,23 @@
             app:nullable="false"/>-->
 
     </fragment>
+
+    <fragment
+        tools:layout="@layout/trash_fragment"
+        android:id="@+id/trashFragment"
+        android:name="com.example.flashcards.ui.fragments.TrashFragment"
+        android:label="TrashFragment" />
+
+    <fragment
+        tools:layout="@layout/label_fragment"
+        android:id="@+id/labelFragment"
+        android:name="com.example.flashcards.ui.fragments.LabelFragment"
+        android:label="LabelFragment" >
+
+        <action
+            android:id="@+id/action_labelFragment_to_cardPageFragment"
+            app:destination="@id/cardPageFragment" />
+    </fragment>
+
+
 </navigation>

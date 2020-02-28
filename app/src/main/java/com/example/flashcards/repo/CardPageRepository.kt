@@ -20,6 +20,7 @@ class CardPageRepository @Inject constructor(private val cardDao: CardDao){
      val allCards=MutableLiveData<List<CardData>>()
      val throwable=MutableLiveData<Throwable>()
      val insetCard=MutableLiveData<Int>()
+     val _flashCard=MutableLiveData<FlashCardData>()
 
     fun insetCardData(cardData: CardData):Maybe<Long> {
         return cardDao.addCardData(cardData)
@@ -34,6 +35,16 @@ class CardPageRepository @Inject constructor(private val cardDao: CardDao){
                 allCards.value=it
             },{
                  throwable.value=it
+            },{
+
+            })
+    }
+
+    fun getFlashCard(id:Int){
+        disposable=cardDao.getFlashCard(id.toLong()).subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                _flashCard.value=it
             },{
 
             })

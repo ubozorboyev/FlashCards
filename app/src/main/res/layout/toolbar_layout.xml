@@ -1,30 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:id="@+id/toolbar"
     android:fitsSystemWindows="true"
     android:backgroundTint="#fff"
     android:background="#fff"
     app:titleTextColor="#95000000"
+    app:contentInsetStart="0dp"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize">
 
 
-  <com.google.android.material.textfield.TextInputLayout
-      android:id="@+id/textInputLayout"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content">
+  <ImageView
+      android:background="?attr/selectableItemBackground"
+      android:scaleType="center"
+      android:id="@+id/imageBack"
+      android:padding="4dp"
+      android:src="@drawable/ic_arrow_back"
+      android:layout_width="?actionBarSize"
+      android:layout_height="match_parent"/>
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/editTextTitle"
+    <TextView
+        android:textStyle="bold"
+        android:id="@+id/actionBarTitle"
+        android:visibility="visible"
+        android:textColor="#CC000000"
+        android:textSize="20sp"
+        android:padding="8dp"
+        android:gravity="center_vertical"
+        android:text="@string/app_name"
         android:layout_width="match_parent"
-        android:typeface="normal"
-        android:inputType="text"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent"/>
 
-  </com.google.android.material.textfield.TextInputLayout>
-
+  <com.google.android.material.textfield.TextInputEditText
+      android:id="@+id/editTextTitle"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:focusable="false"
+      android:focusableInTouchMode="false"
+      android:inputType="textCapSentences"
+      android:lines="1"
+      android:maxLines="1"
+      android:nextFocusDown="@layout/trash_item"
+      android:padding="4dp"
+      android:selectAllOnFocus="false"
+      android:singleLine="false"
+      android:visibility="visible"
+      tools:text="@string/app_name" />
 
 
 </androidx.appcompat.widget.Toolbar>

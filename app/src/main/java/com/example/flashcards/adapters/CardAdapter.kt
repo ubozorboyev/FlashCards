@@ -14,6 +14,7 @@ import androidx.annotation.ColorInt
 import androidx.core.view.ViewCompat
 import androidx.core.view.ViewPropertyAnimatorListener
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.flashcards.R
 import com.example.flashcards.databinding.CardItemBinding
@@ -22,9 +23,8 @@ import com.example.flashcards.setOnFinishListener
 import jp.wasabeef.recyclerview.animators.holder.AnimateViewHolder
 
 class CardAdapter(val context: Context) :RecyclerView.Adapter<CardAdapter.ViewHolder>(){
-     val cardList= arrayListOf<CardData>()
+    val cardList= arrayListOf<CardData>()
     private val duration=100L
-    private var rotationY=0f
     var isOpen=true
     @ColorInt
     var bgColor:Int=Color.parseColor("#F7E378")
@@ -37,6 +37,10 @@ class CardAdapter(val context: Context) :RecyclerView.Adapter<CardAdapter.ViewHo
     inner class ViewHolder(val itemBinding: CardItemBinding):RecyclerView.ViewHolder(itemBinding.root),AnimateViewHolder{
 
         fun bind(flashCard: CardData) {
+
+            isOpen=itemBinding.closeCard.visibility==View.VISIBLE
+
+            Log.d("TTTT","bind isOpen $isOpen")
 
             itemBindingSetData(itemBinding,flashCard)
 
@@ -134,33 +138,23 @@ class CardAdapter(val context: Context) :RecyclerView.Adapter<CardAdapter.ViewHo
 
     fun animateItem(itemBinding: CardItemBinding,flashCard: CardData) {
 
-        if (!isOpen) {
+        if (isOpen) {
 
-            itemBinding.root.animate().rotationY(271f)
+            itemBinding.root.animate().rotationY(-89f)
                 .setDuration(duration)
                 .setOnFinishListener {
+                    itemBinding.closeCard.visibility = View.GONE
 
-                    Log.e("FFFF"," rotationY  Foreground 1 ${itemBinding.root.rotationY}")
+                    itemBinding.root.rotationY = -271f
 
-                    isOpen=true
-
-                    itemBinding.closeCard.visibility = View.VISIBLE
-
+                    isOpen=false
                     itemBindingSetData(itemBinding,flashCard)
 
-                    itemBinding.root.rotationY = 89f
-
-                    Log.e("FFFF"," rotationY  Foreground 2 ${itemBinding.root.rotationY}")
-
-                    itemBinding.root.animate().rotationY(0f).setDuration(duration)
+                    itemBinding.root.animate().rotationY(-360f).setDuration(duration)
                         .setOnFinishListener {
-                            rotationY=0f
-                            Log.e("FFFF"," rotationY  Foreground 3 ${itemBinding.root.rotationY}")
+                            itemBinding.root.rotationY=0f
                         }.start()
-
                 }.start()
-
-            Log.e("FFFF"," rotationY  Foreground 4 ${itemBinding.root.rotationY}")
 
         } else {
 
@@ -168,31 +162,25 @@ class CardAdapter(val context: Context) :RecyclerView.Adapter<CardAdapter.ViewHo
                 .setDuration(duration)
                 .setOnFinishListener {
 
-                    Log.e("FFFFF"," rotationY  Background 1 ${itemBinding.root.rotationY}")
-
-                    isOpen=false
-
-                    itemBinding.closeCard.visibility = View.GONE
-
-                    itemBindingSetData(itemBinding,flashCard)
+                    itemBinding.closeCard.visibility = View.VISIBLE
 
                     itemBinding.root.rotationY = 271f
 
-                    Log.e("FFFFF"," rotationY  Background 2 ${itemBinding.root.rotationY}")
+                    isOpen=true
+
+                    itemBindingSetData(itemBinding,flashCard)
 
                     itemBinding.root.animate().rotationY(360f).setDuration(duration)
                         .setOnFinishListener {
-                            rotationY=360f
-                            Log.e("FFFFF"," rotationY  Background 3 ${itemBinding.root.rotationY}")
+                            itemBinding.root.rotationY=0f
                         }.start()
-
                 }.start()
-
-            Log.e("FFFFF"," rotationY  Background 4 ${itemBinding.root.rotationY}")
         }
     }
 
     fun itemBindingSetData(itemBinding: CardItemBinding,flashCard: CardData){
+
+        Log.d("SSSS","itemBindingSetData  isOpen $isOpen")
 
         if (isOpen){
 
@@ -219,8 +207,6 @@ class CardAdapter(val context: Context) :RecyclerView.Adapter<CardAdapter.ViewHo
             }
         }
 
-        Log.d("COLOR","item color $bgColor")
-
         itemBinding.cardView.setCardBackgroundColor(bgColor)
     }
 
@@ -228,4 +214,19 @@ class CardAdapter(val context: Context) :RecyclerView.Adapter<CardAdapter.ViewHo
          bgColor=color
          notifyDataSetChanged()
     }
+}
+
+
+class CardDiffuclCallback(private val oldList:List<CardData>, private val newList: List<CardData>):DiffUtil.Callback(){
+    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int):Boolean{
+        return oldList[oldItemPosition].id==newList[newItemPosition].id
+    }
+
+    override fun getOldListSize()=oldList.size
+    override fun getNewListSize()=newList.size
+
+    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        return oldList[oldItemPosition]==newList[newItemPosition]
+    }
+
 }

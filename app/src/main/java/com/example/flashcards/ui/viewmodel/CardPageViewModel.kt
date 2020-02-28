@@ -14,6 +14,7 @@ class CardPageViewModel @Inject constructor(private val repo:CardPageRepository)
     private val _allCard=repo.allCards
     var allCards:LiveData<List<CardData>> =_allCard
     var insetCard:LiveData<Int> =repo.insetCard
+    var flashCard:LiveData<FlashCardData> =repo._flashCard
 
     fun getCardsByFlashCard(id:Int){
         repo.getAllByFlashCard(id)
@@ -33,6 +34,10 @@ class CardPageViewModel @Inject constructor(private val repo:CardPageRepository)
 
     fun updateFlashCardById(flashCardData: FlashCardData){
         repo.updateFlashCard(flashCardData)
+    }
+
+    fun getFlashCard(id: Int){
+        repo.getFlashCard(id)
     }
 
 

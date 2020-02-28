@@ -6,7 +6,7 @@ import android.view.ViewPropertyAnimator
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
-import com.example.flashcards.ui.screens.AllSetsFragment
+import com.example.flashcards.ui.fragments.AllSetsFragment
 
 
 fun ViewPropertyAnimator.setOnFinishListener(f:()->Unit): ViewPropertyAnimator {
