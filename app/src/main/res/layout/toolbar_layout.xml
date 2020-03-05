@@ -38,16 +38,12 @@
       android:id="@+id/editTextTitle"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:focusable="false"
-      android:focusableInTouchMode="false"
-      android:inputType="textCapSentences"
+      android:inputType="text"
       android:lines="1"
+      android:hint="Enter flashcard name"
       android:maxLines="1"
-      android:nextFocusDown="@layout/trash_item"
       android:padding="4dp"
-      android:selectAllOnFocus="false"
-      android:singleLine="false"
-      android:visibility="visible"
+      android:visibility="invisible"
       tools:text="@string/app_name" />
 
 

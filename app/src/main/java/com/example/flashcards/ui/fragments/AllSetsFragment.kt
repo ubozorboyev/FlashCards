@@ -3,11 +3,9 @@ package com.example.flashcards.ui.fragments
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
@@ -16,6 +14,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.divyanshu.draw.widget.Action
 import com.example.flashcards.App
 import com.example.flashcards.R
 import com.example.flashcards.databinding.AllsetsFragmentBinding
@@ -65,18 +64,18 @@ class AllSetsFragment: BaseFragment< AllsetsFragmentBinding>
 
     fun obseravbleAndLiveData(){
 
-        viewModel.allFlashCards.observe(this, Observer {
+        viewModel.allFlashCards.observe(viewLifecycleOwner, Observer {
             adapter.list.clear()
             adapter.list.addAll(it)
             adapter.notifyDataSetChanged()
             binding.recyclview.startLayoutAnimation()
         })
 
-        viewModel.isAddFlashCards.observe(this, Observer {
+        viewModel.isAddFlashCards.observe(viewLifecycleOwner, Observer {
                flashId=it
         })
 
-        viewModel.getFlashCard.observe(this, Observer {
+        viewModel.getFlashCard.observe(viewLifecycleOwner, Observer {
 
         })
     }
@@ -170,7 +169,9 @@ class AllSetsFragment: BaseFragment< AllsetsFragmentBinding>
 
             }
             R.id.about->{
-//                activity?.startService(Intent("https://tuit.uz"))
+                val intent=Intent(Intent.ACTION_VIEW)
+                    intent.setData(Uri.parse("https://tuit.uz"))
+                startActivity(intent)
             }
         }
 

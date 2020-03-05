@@ -12,13 +12,6 @@
     <item android:title="Add label"
         android:id="@+id/addLabel"/>
 
-    <item android:title="Statistics"
-        android:id="@+id/statistics"/>
-
-    <item android:id="@+id/editTextItem"
-        android:title="EditText"
-        android:icon="@drawable/ic_edit_black"/>
-
 
     <item
         app:showAsAction="always"

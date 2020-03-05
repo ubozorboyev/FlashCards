@@ -1,19 +1,21 @@
 package com.example.flashcards.ui.fragments
 
 import android.app.Activity
+import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.media.ThumbnailUtils
 import android.os.Bundle
 import android.os.Environment
+import android.os.FileUtils
+import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
+import android.util.Size
+import android.view.*
 import android.view.animation.OvershootInterpolator
 import android.widget.Button
 import androidx.activity.addCallback
@@ -26,6 +28,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.util.FileUtil
 import com.divyanshu.draw.activity.DrawingActivity
 import com.example.flashcards.App
 import com.example.flashcards.R
@@ -35,7 +38,6 @@ import com.example.flashcards.databinding.CardPageFragmentBinding
 import com.example.flashcards.dialogs.ColorPicerDialog
 import com.example.flashcards.dialogs.EditTextDialog
 import com.example.flashcards.dialogs.LabelDialog
-import com.example.flashcards.dialogs.SetTextItemDialog
 import com.example.flashcards.getSnapPosition
 import com.example.flashcards.models.CardData
 import com.example.flashcards.models.FlashCardData
@@ -54,7 +56,9 @@ import javax.inject.Inject
 class CardPageFragment :BaseFragment<CardPageFragmentBinding>
     (R.layout.card_page_fragment),View.OnClickListener {
 
-    private var REQUEST_CODE_DRAW = 0
+    private var REQUEST_CODE_DRAW = -1
+    private var TAKE_PHOTO_CODE=-1
+    private var CHOSE_IMAGE_CODE=-1
     private lateinit var toolbar: Toolbar
     private lateinit var adapter: CardAdapter
     private var snapView: View? = null
@@ -168,9 +172,8 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
         adapter.textListener=object :(Int,Boolean)->Unit{
 
             override fun invoke(positon: Int,isOpen:Boolean) {
-                val dialog=SetTextItemDialog(context!!)
-                dialog.show()
-                dialog.setTextListener {
+                val dialog=EditTextDialog(context!!)
+                dialog.editTextListener {
                     if (isOpen){
                         adapter.cardList[positon].forText= it
                         adapter.cardList[positon].forImage= null
@@ -180,6 +183,25 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
                     }
                     adapter.notifyItemRangeChanged(positon,1)
                 }
+            }
+        }
+
+        adapter.takePhotoListener=object :(Int)->Unit{
+            override fun invoke(p1: Int) {
+                val intent=Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                TAKE_PHOTO_CODE=p1
+                startActivityForResult(intent,TAKE_PHOTO_CODE)
+            }
+        }
+
+        adapter.choseImageListener=object :(Int)->Unit{
+
+            override fun invoke(p1: Int) {
+
+                val intent=Intent(Intent.ACTION_PICK)
+                intent.type="image/*"
+                CHOSE_IMAGE_CODE=p1
+                startActivityForResult(intent,CHOSE_IMAGE_CODE)
             }
         }
 
@@ -225,12 +247,6 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
 
         when(item.itemId){
 
-            R.id.editTextItem->{
-                val dialog=EditTextDialog(context!!,title.value!!)
-
-                dialog.editTextListener { title.value=it }
-                dialog.show()
-            }
             R.id.changeColor->{
                 choseColorItemColor()
             }
@@ -343,7 +359,6 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
                 activity?.onBackPressed()
             }
             R.id.editTextTitle->{
-              binding.appBar.editTextTitle.isFocusableInTouchMode=true
 
             }
         }
@@ -357,13 +372,31 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
                     val result = data.getByteArrayExtra("bitmap")
 
                     val bitmap = BitmapFactory.decodeByteArray(result, 0, result.size)
-                    saveImage(bitmap,"draw__${System.currentTimeMillis()}")
+                    saveImage(bitmap,"draw__${System.currentTimeMillis()}",requestCode)
+                 REQUEST_CODE_DRAW=-1
+                }
+                CHOSE_IMAGE_CODE->{
+
+                    val bitmap=MediaStore.Images.Media.getBitmap(activity?.contentResolver,data.data)
+
+                    saveImage(bitmap,"image__${System.currentTimeMillis()}",requestCode)
+
+                    CHOSE_IMAGE_CODE=-1
+                }
+                TAKE_PHOTO_CODE->{
+
+                    val bitmap=data.extras?.get("data") as Bitmap
+
+//                    val thumbnailUtils=ThumbnailUtils.createImageThumbnail(File(data.data!!.path!!),Size(512,384),null)
+                    saveImage(bitmap,"image__${System.currentTimeMillis()}",requestCode)
+
+                    TAKE_PHOTO_CODE=-1
                 }
             }
         }
     }
 
-    fun saveImage(bitmap: Bitmap, fileName: String) {
+    fun saveImage(bitmap: Bitmap, fileName: String,position:Int) {
 
         val imageDir = "${Environment.DIRECTORY_PICTURES}/FlashCard/"
         val path = Environment.getExternalStoragePublicDirectory(imageDir)
@@ -372,21 +405,22 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
         path.mkdirs()
         file.createNewFile()
         val outputStream = FileOutputStream(file)
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+
+        val resize=Bitmap.createScaledBitmap(bitmap,512,384,true)
+
+        resize.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
         outputStream.flush()
         outputStream.close()
 
-        Log.d("SSSS","saveImage  isOpen ${adapter.isOpen}")
-
         if (adapter.isOpen){
 
-            adapter.cardList[REQUEST_CODE_DRAW].forImage=file.absolutePath
-            adapter.cardList[REQUEST_CODE_DRAW].forText=""
+            adapter.cardList[position].forImage=file.absolutePath
+            adapter.cardList[position].forText=""
         } else {
-            adapter.cardList[REQUEST_CODE_DRAW].backImage=file.absolutePath
-            adapter.cardList[REQUEST_CODE_DRAW].backText=""
+            adapter.cardList[position].backImage=file.absolutePath
+            adapter.cardList[position].backText=""
         }
-        adapter.notifyItemChanged(REQUEST_CODE_DRAW)
+        adapter.notifyItemChanged(position)
     }
 
     override fun onDestroy() {

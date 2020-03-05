@@ -31,7 +31,7 @@ class CardAdapter(val context: Context) :RecyclerView.Adapter<CardAdapter.ViewHo
     var textListener:((Int,Boolean)->Unit)?=null
     var drawListener:((Int)->Unit)?=null
     var takePhotoListener:((Int)->Unit)?=null
-    var chodeImageListener:((Int)->Unit)?=null
+    var choseImageListener:((Int)->Unit)?=null
     var deleteItemListener:((CardData)->Unit)?=null
 
     inner class ViewHolder(val itemBinding: CardItemBinding):RecyclerView.ViewHolder(itemBinding.root),AnimateViewHolder{
@@ -60,7 +60,7 @@ class CardAdapter(val context: Context) :RecyclerView.Adapter<CardAdapter.ViewHo
                            takePhotoListener?.invoke(adapterPosition)
                         }
                         R.id.chooseImage->{
-                            chodeImageListener?.invoke(adapterPosition)
+                            choseImageListener?.invoke(adapterPosition)
                         }
                         R.id.drawing->{
                             drawListener?.invoke(adapterPosition)
