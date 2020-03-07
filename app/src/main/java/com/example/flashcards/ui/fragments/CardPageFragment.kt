@@ -1,20 +1,16 @@
 package com.example.flashcards.ui.fragments
 
 import android.app.Activity
-import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.media.ThumbnailUtils
 import android.os.Bundle
 import android.os.Environment
-import android.os.FileUtils
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.util.Size
 import android.view.*
 import android.view.animation.OvershootInterpolator
 import android.widget.Button
@@ -24,16 +20,13 @@ import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.util.FileUtil
 import com.divyanshu.draw.activity.DrawingActivity
 import com.example.flashcards.App
 import com.example.flashcards.R
 import com.example.flashcards.adapters.CardAdapter
-import com.example.flashcards.adapters.CardDiffuclCallback
 import com.example.flashcards.databinding.CardPageFragmentBinding
 import com.example.flashcards.dialogs.ColorPicerDialog
 import com.example.flashcards.dialogs.EditTextDialog
@@ -353,7 +346,13 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
             }
 
             R.id.playCard -> {
+                val bunde=Bundle()
+                bunde.putInt("ID",flashCardData.id)
+                bunde.putString("NAME",flashCardData.name)
+                bunde.putInt("COLOR",flashCardData.backgroundColor)
+                viewModel.updateCards(adapter.cardList)
 
+                findNavController().navigate(R.id.action_cardPageFragment_to_playCardFragment,bunde)
             }
             R.id.imageBack->{
                 activity?.onBackPressed()
@@ -379,7 +378,7 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
 
                     val bitmap=MediaStore.Images.Media.getBitmap(activity?.contentResolver,data.data)
 
-                    saveImage(bitmap,"image__${System.currentTimeMillis()}",requestCode)
+                    saveImage(resizeBitmap(bitmap),"image__${System.currentTimeMillis()}",requestCode)
 
                     CHOSE_IMAGE_CODE=-1
                 }
@@ -387,8 +386,7 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
 
                     val bitmap=data.extras?.get("data") as Bitmap
 
-//                    val thumbnailUtils=ThumbnailUtils.createImageThumbnail(File(data.data!!.path!!),Size(512,384),null)
-                    saveImage(bitmap,"image__${System.currentTimeMillis()}",requestCode)
+                    saveImage(resizeBitmap(bitmap),"image__${System.currentTimeMillis()}",requestCode)
 
                     TAKE_PHOTO_CODE=-1
                 }
@@ -398,17 +396,14 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
 
     fun saveImage(bitmap: Bitmap, fileName: String,position:Int) {
 
-        val imageDir = "${Environment.DIRECTORY_PICTURES}/FlashCard/"
-        val path = Environment.getExternalStoragePublicDirectory(imageDir)
+        val imageDir =File("${Environment.getExternalStorageDirectory()}/FlashCard/")
 
-        val file = File(path, "$fileName.png")
-        path.mkdirs()
+        val file = File(imageDir, "$fileName.jpg")
+        imageDir.mkdirs()
         file.createNewFile()
         val outputStream = FileOutputStream(file)
 
-        val resize=Bitmap.createScaledBitmap(bitmap,512,384,true)
-
-        resize.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, outputStream)
         outputStream.flush()
         outputStream.close()
 
@@ -421,6 +416,26 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
             adapter.cardList[position].backText=""
         }
         adapter.notifyItemChanged(position)
+    }
+
+    fun resizeBitmap(bitmap: Bitmap):Bitmap{
+
+        var heigt=bitmap.height.toFloat()
+        var width=bitmap.width.toFloat()
+        var process=bitmap.width.toFloat()/bitmap.height
+
+        if (process==1f){
+            process=1.1f
+        }
+
+            while (heigt>1024 && width>1024){
+                heigt/=process
+                width/=process
+            }
+
+        val resize=Bitmap.createScaledBitmap(bitmap,width.toInt(),heigt.toInt(),true)
+
+        return resize
     }
 
     override fun onDestroy() {

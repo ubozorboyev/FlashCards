@@ -21,6 +21,7 @@ import com.example.flashcards.databinding.AllsetsFragmentBinding
 import com.example.flashcards.adapters.AllSetsAdapter
 import com.example.flashcards.gotoCardPage
 import com.example.flashcards.models.FlashCardData
+import com.example.flashcards.ui.SplashActivity
 import com.example.flashcards.ui.viewmodel.AllSetsViewModel
 import com.google.android.material.navigation.NavigationView
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -166,12 +167,15 @@ class AllSetsFragment: BaseFragment< AllsetsFragmentBinding>
                 findNavController().navigate(R.id.action_allSetsFragment_to_labelFragment,bundle)
             }
             R.id.hepl->{
-
+                  val intent=Intent(context,SplashActivity::class.java)
+                   intent.putExtra("ISAVIABLE",true)
+                   startActivity(intent)
+                   activity?.finish()
             }
             R.id.about->{
                 val intent=Intent(Intent.ACTION_VIEW)
                     intent.setData(Uri.parse("https://tuit.uz"))
-                startActivity(intent)
+                    startActivity(intent)
             }
         }
 

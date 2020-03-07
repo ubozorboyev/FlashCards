@@ -40,9 +40,11 @@ class CardAdapter(val context: Context) :RecyclerView.Adapter<CardAdapter.ViewHo
 
             isOpen=itemBinding.closeCard.visibility==View.VISIBLE
 
-            Log.d("TTTT","bind isOpen $isOpen")
-
             itemBindingSetData(itemBinding,flashCard)
+
+            itemBinding.flashCardText.setOnClickListener {
+                textListener?.invoke(adapterPosition,isOpen)
+            }
 
             itemBinding.plusImage.setOnClickListener{
 
@@ -180,8 +182,6 @@ class CardAdapter(val context: Context) :RecyclerView.Adapter<CardAdapter.ViewHo
 
     fun itemBindingSetData(itemBinding: CardItemBinding,flashCard: CardData){
 
-        Log.d("SSSS","itemBindingSetData  isOpen $isOpen")
-
         if (isOpen){
 
                 itemBinding.flashCardText.text=flashCard.forText
@@ -214,19 +214,4 @@ class CardAdapter(val context: Context) :RecyclerView.Adapter<CardAdapter.ViewHo
          bgColor=color
          notifyDataSetChanged()
     }
-}
-
-
-class CardDiffuclCallback(private val oldList:List<CardData>, private val newList: List<CardData>):DiffUtil.Callback(){
-    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int):Boolean{
-        return oldList[oldItemPosition].id==newList[newItemPosition].id
-    }
-
-    override fun getOldListSize()=oldList.size
-    override fun getNewListSize()=newList.size
-
-    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldList[oldItemPosition]==newList[newItemPosition]
-    }
-
 }

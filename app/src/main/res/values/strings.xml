@@ -5,8 +5,11 @@
     <string name="important">important</string>
     <string name="dictionary">dictionary</string>
     <string name="todo">todo</string>
+    <string name="edit_text_hint">Enter question, tile, word..</string>
+    <string name="edit_text">Edit text</string>
+    <string name="enter_flashcard_name">Enter flashcard name</string>
 
-    <array  name="colorsList">
+    <array name="colorsList">
         <item name="color_1">#F7E378</item>
         <item name="color_2">#CC72E223</item>
         <item name="color_3">#B356C7F3</item>

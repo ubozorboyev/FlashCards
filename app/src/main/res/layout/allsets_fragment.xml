@@ -40,7 +40,6 @@
 
                         <br.com.stickyindex.view.StickyIndex
                             android:id="@+id/stickyIndex"
-                            android:textStyle="bold"
                             android:textColor="#B3000000"
                             android:textSize="36sp"
                             android:layout_width="70dp"

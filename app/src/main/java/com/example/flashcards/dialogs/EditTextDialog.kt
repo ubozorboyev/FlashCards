@@ -28,25 +28,27 @@ class EditTextDialog(val context: Context) {
             override fun onClick(dialog: DialogInterface?, which: Int) {
                 listener?.invoke(editText.text.toString())
                 dialog?.dismiss()
+                hideKyboard()
             }
         })
+
+        dialog=builder.setView(view).create()
 
         editText.setOnEditorActionListener { v, actionId, event ->
             when(actionId){
                 EditorInfo.IME_ACTION_DONE->{
                     listener?.invoke(editText.text.toString())
+                      dialog.dismiss()
+                      hideKyboard()
                     true
-
                 }
                 else->false
             }
         }
 
-        dialog=builder.setView(view).create()
+        dialog.show()
 
         showKeyboard()
-
-        dialog.show()
     }
 
     fun editTextListener(ls:(String)->Unit){
@@ -55,7 +57,7 @@ class EditTextDialog(val context: Context) {
 
     fun showKeyboard(){
         val imm=context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,0)
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0)
     }
 
     fun hideKyboard(){

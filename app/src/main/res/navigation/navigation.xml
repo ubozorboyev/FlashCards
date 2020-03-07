@@ -35,6 +35,9 @@
             android:defaultValue="true"
             app:nullable="false"/>-->
 
+        <action
+            android:id="@+id/action_cardPageFragment_to_playCardFragment"
+            app:destination="@id/playCardFragment" />
     </fragment>
 
     <fragment
@@ -53,6 +56,11 @@
             android:id="@+id/action_labelFragment_to_cardPageFragment"
             app:destination="@id/cardPageFragment" />
     </fragment>
+    <fragment
+        tools:layout="@layout/paly_card_fragment"
+        android:id="@+id/playCardFragment"
+        android:name="com.example.flashcards.ui.fragments.PlayCardFragment"
+        android:label="PlayCardFragment" />
 
 
 </navigation>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context="ui.fragments.PlayCardFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <FrameLayout
+            android:padding="8dp"
+            android:id="@+id/layout"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize">
+
+            <TextView
+                android:gravity="center_vertical"
+                android:id="@+id/cardName"
+                android:text="@string/app_name"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
+
+
+            <TextView
+                android:id="@+id/currentCard"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:text="1/23"
+                android:layout_gravity="end"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
+
+        </FrameLayout>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclview"
+            android:elevation="0dp"
+            android:orientation="horizontal"
+            tools:listitem="@layout/play_card_item"
+            app:layout_constraintTop_toBottomOf="@id/layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/layout1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"/>
+
+
+        <LinearLayout
+            android:id="@+id/layout1"
+            android:padding="8dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:layout_marginRight="8dp"
+                android:id="@+id/fabRototion"
+                app:elevation="0dp"
+                android:src="@drawable/ic_cached_white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:layout_marginLeft="8dp"
+                android:id="@+id/fabShuffle"
+                app:elevation="0dp"
+                android:src="@drawable/ic_shuffle_white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

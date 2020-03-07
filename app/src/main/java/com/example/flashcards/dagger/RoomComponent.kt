@@ -18,4 +18,6 @@ interface RoomComponent {
 
     fun inject(trashFragment: LabelFragment)
 
+    fun inject(playCardFragment: PlayCardFragment)
+
 }
