@@ -20,6 +20,9 @@
         <action
             android:id="@+id/action_allSetsFragment_to_labelFragment"
             app:destination="@id/labelFragment" />
+        <action
+            android:id="@+id/action_allSetsFragment_to_backupFragment"
+            app:destination="@id/backupFragment" />
 
 
     </fragment>
@@ -61,6 +64,12 @@
         android:id="@+id/playCardFragment"
         android:name="com.example.flashcards.ui.fragments.PlayCardFragment"
         android:label="PlayCardFragment" />
+
+    <fragment
+        tools:layout="@layout/backup_fragment"
+        android:id="@+id/backupFragment"
+        android:name="com.example.flashcards.ui.fragments.BackupFragment"
+        android:label="BackupFragment" />
 
 
 </navigation>

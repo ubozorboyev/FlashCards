@@ -38,38 +38,37 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <br.com.stickyindex.view.StickyIndex
+                       <!-- <br.com.stickyindex.view.StickyIndex
                             android:id="@+id/stickyIndex"
                             android:textColor="#B3000000"
                             android:textSize="36sp"
-                            android:layout_width="70dp"
+                            android:layout_width="@dimen/dpi_70"
                             app:rowHeight="64dp"
                             app:stickyWidth="60dp"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"/>-->
 
                         <androidx.recyclerview.widget.RecyclerView
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="@dimen/dpi_10"
                             android:layoutAnimation="@anim/layout_animation"
                             android:id="@+id/recyclview"
-                            android:layout_marginRight="8dp"
                             tools:listitem="@layout/allset_item"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"/>
 
-                        <br.com.stickyindex.view.FastScroller
+                     <!--   <br.com.stickyindex.view.FastScroller
                             android:id="@+id/fastScroller"
                             android:layout_gravity="end"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="10dp"
-                            android:layout_width="10dp"
+                            android:layout_marginTop="@dimen/dpi_10"
+                            android:layout_marginBottom="@dimen/dpi_10"
+                            android:layout_width="@dimen/dpi_10"
                             android:layout_height="match_parent"/>
-
+-->
 
                     </FrameLayout>
 
 
                     <LinearLayout
-                        android:layout_marginTop="200dp"
+                        android:layout_marginTop="@dimen/dpi_200"
                         android:elevation="0dp"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"/>
@@ -80,14 +79,13 @@
             </androidx.core.widget.NestedScrollView>
 
 
-
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:id="@+id/fabButton"
                 android:backgroundTint="#C72C20"
-                android:layout_marginBottom="8dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginBottom="@dimen/dpi_8"
+                android:layout_marginRight="@dimen/dpi_8"
                 style="@style/MapButton"
                 android:src="@drawable/ic_add_black"
                 android:layout_width="wrap_content"

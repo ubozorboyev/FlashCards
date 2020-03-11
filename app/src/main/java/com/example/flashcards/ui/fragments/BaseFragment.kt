@@ -26,16 +26,6 @@ abstract class BaseFragment<DB:ViewDataBinding>(@LayoutRes val layoutRes:Int) :F
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-/*
-
-        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
-
-            Log.d("BBBB","ONBACKPRESSERT")
-            // Handle the back button event
-        }
-*/
 
     }
-
-
 }

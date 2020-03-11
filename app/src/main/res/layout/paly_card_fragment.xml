@@ -4,12 +4,13 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         tools:context="ui.fragments.PlayCardFragment"
+        tools:viewBindingIgnore="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
 
         <FrameLayout
-            android:padding="8dp"
+            android:padding="@dimen/dpi_8"
             android:id="@+id/layout"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_width="match_parent"
@@ -19,14 +20,14 @@
                 android:gravity="center_vertical"
                 android:id="@+id/cardName"
                 android:text="@string/app_name"
-                android:textSize="18sp"
+                android:textSize="@dimen/text_20"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"/>
 
 
             <TextView
                 android:id="@+id/currentCard"
-                android:textSize="18sp"
+                android:textSize="@dimen/text_20"
                 android:gravity="center"
                 android:text="1/23"
                 android:layout_gravity="end"
@@ -51,7 +52,7 @@
 
         <LinearLayout
             android:id="@+id/layout1"
-            android:padding="8dp"
+            android:padding="@dimen/dpi_8"
             android:orientation="horizontal"
             android:gravity="center"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -59,7 +60,7 @@
             android:layout_height="wrap_content">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:layout_marginRight="8dp"
+                android:layout_marginRight="@dimen/dpi_8"
                 android:id="@+id/fabRototion"
                 app:elevation="0dp"
                 android:src="@drawable/ic_cached_white"
@@ -67,7 +68,7 @@
                 android:layout_height="wrap_content"/>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:layout_marginLeft="8dp"
+                android:layout_marginLeft="@dimen/dpi_8"
                 android:id="@+id/fabShuffle"
                 app:elevation="0dp"
                 android:src="@drawable/ic_shuffle_white"

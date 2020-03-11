@@ -2,13 +2,13 @@
 <androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:id="@+id/toolbar"
     android:fitsSystemWindows="true"
     android:backgroundTint="#fff"
     android:background="#fff"
     app:titleTextColor="#95000000"
     app:contentInsetStart="0dp"
+    android:elevation="@dimen/dpi_4"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize">
 
@@ -17,7 +17,7 @@
       android:background="?attr/selectableItemBackground"
       android:scaleType="center"
       android:id="@+id/imageBack"
-      android:padding="4dp"
+      android:padding="@dimen/dpi_4"
       android:src="@drawable/ic_arrow_back"
       android:layout_width="?actionBarSize"
       android:layout_height="match_parent"/>
@@ -26,9 +26,9 @@
         android:textStyle="bold"
         android:id="@+id/actionBarTitle"
         android:visibility="visible"
-        android:textColor="#CC000000"
-        android:textSize="20sp"
-        android:padding="8dp"
+        android:textColor="#B5000000"
+        android:textSize="@dimen/text_18"
+        android:padding="@dimen/dpi_8"
         android:gravity="center_vertical"
         android:text="@string/app_name"
         android:layout_width="match_parent"
@@ -43,7 +43,7 @@
       android:imeOptions="actionDone"
       android:hint="@string/enter_flashcard_name"
       android:maxLines="1"
-      android:padding="4dp"
+      android:padding="@dimen/dpi_4"
       android:visibility="invisible"
       tools:text="@string/app_name" />
 

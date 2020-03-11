@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FlashCards</string>
+    <string name="app_name">Flashcards</string>
     <string name="help">Help &amp; Support</string>
     <string name="bakup">Restore &amp; Trash</string>
     <string name="important">important</string>
@@ -7,7 +7,17 @@
     <string name="todo">todo</string>
     <string name="edit_text_hint">Enter question, tile, word..</string>
     <string name="edit_text">Edit text</string>
-    <string name="enter_flashcard_name">Enter flashcard name</string>
+    <string name="enter_flashcard_name">Enter set name</string>
+    <string name="sign_dropbox">Sign up with dropbox</string>
+    <string name="bachup_restore">Dropbox and the Dropbox logo are trademarks of Dropbox, Inc</string>
+    <string name="page1">Welcome to Flashcards!</string>
+    <string name="pageOne">Speed up your learning with Flashcards!</string>
+    <string name="page2">Create Sets</string>
+    <string name="pageTwo">Sets are organized, labeled and colored to easily find them later</string>
+    <string name="page3">Add Flashcards</string>
+    <string name="pageTree">Flashcards can contain text, image or drawing on both sides</string>
+    <string name="page4">Study mode</string>
+    <string name="pageFo">Study your flashcards anytime! Shake your phone to shuffle cards, or simply slide right/left</string>
 
     <array name="colorsList">
         <item name="color_1">#F7E378</item>

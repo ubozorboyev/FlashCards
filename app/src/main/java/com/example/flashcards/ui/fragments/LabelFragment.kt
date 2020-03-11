@@ -52,7 +52,7 @@ class LabelFragment :BaseFragment<LabelFragmentBinding>(R.layout.label_fragment)
             }
         }
 
-        viewModel.allLabel.observe(this, Observer {
+        viewModel.allLabel.observe(viewLifecycleOwner, Observer {
            adapter.setData(it)
            binding.recyclview.startLayoutAnimation()
         })

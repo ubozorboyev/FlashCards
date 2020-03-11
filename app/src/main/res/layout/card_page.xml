@@ -1,37 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="@dimen/dpi_8"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
         android:id="@+id/imageView"
-        app:layout_constraintTop_toTopOf="parent"
         android:src="@drawable/ic_cached"
         android:layout_width="match_parent"
-        android:layout_height="400dp"/>
+        android:layout_height="@dimen/dpi_200"/>
 
     <TextView
+        android:layout_marginTop="@dimen/dpi_8"
         android:id="@+id/textOne"
-        android:textColor="#000"
+        android:textColor="#fff"
         android:gravity="center"
         android:text="@string/app_name"
-        android:padding="8dp"
-        android:textSize="28sp"
-        app:layout_constraintTop_toBottomOf="@id/imageView"
+        android:padding="@dimen/dpi_8"
+        android:textSize="@dimen/text_24"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <TextView
+        android:layout_marginTop="@dimen/dpi_8"
         android:id="@+id/textTwo"
-        android:textColor="#000"
+        android:textColor="#fff"
         android:gravity="center"
         android:text="@string/fab_transformation_scrim_behavior"
-        android:padding="8dp"
-        android:textSize="28sp"
-        app:layout_constraintTop_toBottomOf="@id/textOne"
+        android:padding="@dimen/dpi_8"
+        android:textSize="@dimen/text_20"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

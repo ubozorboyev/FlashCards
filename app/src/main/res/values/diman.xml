@@ -3,4 +3,16 @@
     <dimen name="pageMargin">25dp</dimen>
     <dimen name="offset">25dp</dimen>
     <dimen name="pageMarginAndOffset">60dp</dimen>
+    <dimen name="margin_card_item">40dp</dimen>
+
+    <dimen name="dpi_250">250dp</dimen>
+    <dimen name="dpi_200">200dp</dimen>
+    <dimen name="dpi_120">120dp</dimen>
+    <dimen name="dpi_100">100dp</dimen>
+    <dimen name="dpi_70">70dp</dimen>
+    <dimen name="dpi_20">20dp</dimen>
+    <dimen name="dpi_10">10dp</dimen>
+    <dimen name="dpi_8">8dp</dimen>
+    <dimen name="dpi_4">4dp</dimen>
+
 </resources>

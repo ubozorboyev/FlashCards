@@ -14,6 +14,7 @@ import android.util.Log
 import android.view.*
 import android.view.animation.OvershootInterpolator
 import android.widget.Button
+import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -55,7 +56,7 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
     private lateinit var toolbar: Toolbar
     private lateinit var adapter: CardAdapter
     private var snapView: View? = null
-    private var title = MutableLiveData<String>()
+    private var title = ""
     private var flashCardId: Int = 0
     private var isDelete:Boolean=false
     @Inject
@@ -71,17 +72,15 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        adapter = CardAdapter(this.context!!)
-
         flashCardId = arguments!!.getInt("ID")
-        title.value = arguments!!.getString("NAME", "Untitle set")
-        adapter.bgColor=arguments!!.getInt("COLOR")
-
-
+        title=arguments!!.getString("NAME","Unititel set")
         viewModel.getCardsByFlashCard(flashCardId)
         viewModel.getFlashCard(flashCardId)
+        adapter = CardAdapter(this.context!!)
+
 
         viewModel.flashCard.observe(viewLifecycleOwner, Observer {
+            adapter.setItemBackround(it.backgroundColor)
             flashCardData=it
         })
 
@@ -93,37 +92,23 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
 
 
     fun setActionBar(){
+        binding.appBar.actionBarTitle.visibility=View.GONE
+        binding.appBar.editTextTitle.visibility=View.VISIBLE
+        binding.appBar.editTextTitle.setText(title)
+
         toolbar = binding.appBar as Toolbar
         (activity as AppCompatActivity).setSupportActionBar(toolbar)
 
         toolbar.inflateMenu(R.menu.card_page_menu)
 
-        title.observe(viewLifecycleOwner, Observer {
-            binding.appBar.actionBarTitle.setText(it)
-        })
-
-        binding.appBar.actionBarTitle.visibility=View.GONE
-        binding.appBar.editTextTitle.visibility=View.VISIBLE
-        binding.appBar.editTextTitle.setText(title.value)
-
         binding.appBar.editTextTitle.addTextChangedListener(object :TextWatcher{
 
             override fun afterTextChanged(s: Editable?) {
-                if (!s.isNullOrEmpty()){
-                    title.value=s.toString()
-                }else{
-                    title.value="Unititel set"
-                }
-
+                title=if (!s.isNullOrEmpty()) s.toString() else "Untitel set"
             }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
 
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                Log.d("TTTT","beforeTextChanged ${s.toString()}")
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                Log.d("TTTT","onTextChanged ${s.toString()}")
-            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
         })
 
     }
@@ -211,6 +196,7 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
 
             override fun invoke(p1: CardData) {
                 viewModel.deleteCard(p1)
+                Toast.makeText(context,"card delete",Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -220,18 +206,11 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
         binding.addCard.setOnClickListener(this)
         binding.playCard.setOnClickListener(this)
         binding.appBar.imageBack.setOnClickListener(this)
-        binding.appBar.editTextTitle.setOnClickListener(this)
-
 
         requireActivity().onBackPressedDispatcher.addCallback(this){
 
             viewModel.updateCards(adapter.cardList)
-
-            flashCardData.backgroundColor=adapter.bgColor
-            flashCardData.cardCount=adapter.cardList.size
-            flashCardData.name=title.value!!
-            flashCardData.isDelete=isDelete
-            viewModel.updateFlashCardById(flashCardData)
+            upateFlashCard()
             findNavController().popBackStack()
         }
     }
@@ -254,7 +233,12 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
 
                 val dialog=LabelDialog(context!!,object :CheckLabelInterface{
                     override fun setLabelCardData(flashCardData: FlashCardData) {
-                        viewModel.updateFlashCardById(flashCardData)
+                        this@CardPageFragment.flashCardData.apply {
+                            isDictionary=flashCardData.isDictionary
+                            isImportant=flashCardData.isImportant
+                            isImportant=flashCardData.isImportant
+                        }
+                        upateFlashCard()
                     }
 
                 },flashCardData)
@@ -346,20 +330,19 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
             }
 
             R.id.playCard -> {
+                upateFlashCard()
+                viewModel.updateCards(adapter.cardList)
                 val bunde=Bundle()
                 bunde.putInt("ID",flashCardData.id)
                 bunde.putString("NAME",flashCardData.name)
                 bunde.putInt("COLOR",flashCardData.backgroundColor)
-                viewModel.updateCards(adapter.cardList)
 
                 findNavController().navigate(R.id.action_cardPageFragment_to_playCardFragment,bunde)
             }
             R.id.imageBack->{
                 activity?.onBackPressed()
             }
-            R.id.editTextTitle->{
 
-            }
         }
     }
 
@@ -403,7 +386,7 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
         file.createNewFile()
         val outputStream = FileOutputStream(file)
 
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, outputStream)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream)
         outputStream.flush()
         outputStream.close()
 
@@ -422,15 +405,18 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
 
         var heigt=bitmap.height.toFloat()
         var width=bitmap.width.toFloat()
-        var process=bitmap.width.toFloat()/bitmap.height
+    /*    var process=bitmap.width.toFloat()/bitmap.height
 
-        if (process==1f){
+        if (process==1f || process==0f){
             process=1.1f
-        }
+        }*/
+
 
             while (heigt>1024 && width>1024){
-                heigt/=process
-                width/=process
+                Log.d("tttt","heigt $heigt")
+                Log.d("tttt","with $width")
+                heigt *= 0.9f
+                width *= 0.9f
             }
 
         val resize=Bitmap.createScaledBitmap(bitmap,width.toInt(),heigt.toInt(),true)
@@ -443,6 +429,13 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
         viewModel.onDestroy()
     }
 
+    fun upateFlashCard(){
+        flashCardData.backgroundColor=adapter.bgColor
+        flashCardData.cardCount=adapter.cardList.size
+        flashCardData.name=title
+        flashCardData.isDelete=isDelete
+        viewModel.updateFlashCardById(flashCardData)
+    }
 }
 
 interface CheckLabelInterface{

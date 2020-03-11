@@ -10,8 +10,11 @@
     <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         tools:context="ui.fragments.CardFragment"
-        android:layout_margin="@dimen/pageMarginAndOffset"
-        app:cardCornerRadius="4dp"
+        android:layout_marginTop="@dimen/margin_card_item"
+        android:layout_marginBottom="@dimen/margin_card_item"
+        android:layout_marginLeft="@dimen/margin_card_item"
+        android:layout_marginRight="@dimen/margin_card_item"
+        app:cardCornerRadius="@dimen/dpi_4"
         android:elevation="0dp"
         android:id="@+id/cardView"
         app:cardElevation="0dp"
@@ -33,7 +36,7 @@
             <ImageView
 
                 android:id="@+id/plusImage"
-                android:padding="4dp"
+                android:padding="@dimen/dpi_4"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:src="@drawable/ic_add_box"
@@ -43,7 +46,7 @@
 
             <ImageView
                 android:id="@+id/closeCard"
-                android:padding="4dp"
+                android:padding="@dimen/dpi_4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:src="@drawable/ic_delete"
@@ -51,11 +54,11 @@
                 android:layout_height="wrap_content"/>
 
             <TextView
-                android:padding="4dp"
-                android:layout_margin="20dp"
+                android:padding="@dimen/dpi_4"
+                android:layout_margin="@dimen/dpi_20"
                 android:id="@+id/flashCardText"
                 android:textColor="#000"
-                android:textSize="24sp"
+                android:textSize="@dimen/text_24"
                 android:gravity="center"
                 app:layout_constraintBottom_toTopOf="@id/rotateImage"
                 app:layout_constraintTop_toBottomOf="@+id/closeCard"
@@ -66,7 +69,7 @@
 
             <ImageView
                 android:id="@+id/rotateImage"
-                android:padding="4dp"
+                android:padding="@dimen/dpi_4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:src="@drawable/ic_rotate_right"

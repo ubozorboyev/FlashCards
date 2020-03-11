@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.ColorInt
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.flashcards.R
@@ -19,6 +20,7 @@ class PlayCardAdapter :RecyclerView.Adapter<PlayCardAdapter.ViewHolder>(){
     private val cardList= arrayListOf<CardData>()
     private val duration=100L
     var isOpen=true
+    @ColorInt
     var color:Int= Color.parseColor("#F7E378")
 
 

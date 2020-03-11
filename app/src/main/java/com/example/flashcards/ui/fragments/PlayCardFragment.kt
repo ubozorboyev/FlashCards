@@ -30,21 +30,27 @@ class PlayCardFragment :BaseFragment<PalyCardFragmentBinding>(R.layout.paly_card
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        binding.recyclview.layoutManager=CustomLayoutManager(context!!,LinearLayoutManager.HORIZONTAL)
-        binding.recyclview.adapter=adapter
-        binding.fabRototion.setOnClickListener(this)
-        binding.fabShuffle.setOnClickListener(this)
-        init()
+
         binding.cardName.text=arguments?.getString("NAME")
         adapter.color=arguments?.getInt("COLOR")!!
 
         val id=arguments?.getInt("ID")!!
         viewModel.loadAllCards(id)
 
+
+
+        binding.recyclview.layoutManager=CustomLayoutManager(context!!,LinearLayoutManager.HORIZONTAL)
+        binding.recyclview.adapter=adapter
+        binding.fabRototion.setOnClickListener(this)
+        binding.fabShuffle.setOnClickListener(this)
+        init()
+
     }
 
 
     fun init(){
+
+
         val snapHelper=LinearSnapHelper()
         snapHelper.attachToRecyclerView(binding.recyclview)
         val snapVIew=snapHelper.findSnapView(binding.recyclview.layoutManager)

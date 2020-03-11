@@ -6,6 +6,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         tools:context="ui.fragments.CardPageFragment"
         android:layout_width="match_parent"
+        tools:viewBindingIgnore="true"
         android:layout_height="match_parent">
 
         <include
@@ -39,7 +40,7 @@
 
         <LinearLayout
             android:orientation="horizontal"
-            android:layout_marginBottom="12dp"
+            android:layout_marginBottom="@dimen/dpi_10"
             android:id="@+id/freamLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -57,19 +58,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:backgroundTint="#F12626" />
-
-
-
-<!--
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/bookCard"
-                app:elevation="0dp"
-                android:elevation="0dp"
-                android:layout_gravity="center"
-                android:backgroundTint="#F12626"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
--->
 
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton

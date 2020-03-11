@@ -38,6 +38,9 @@ class SplashActivity : AppCompatActivity() {
         }
         setContentView(R.layout.activity_splash)
 
+        viewPager.adapter=PagerAdapter(applicationContext)
+
+
         viewPager.addOnPageChangeListener(object :ViewPager.OnPageChangeListener{
             override fun onPageScrollStateChanged(state: Int) {
 
@@ -48,6 +51,14 @@ class SplashActivity : AppCompatActivity() {
                 positionOffset: Float,
                 positionOffsetPixels: Int
             ) {
+
+                viewPager.setBackgroundColor(when(position){
+                    0->Color.RED
+                    1->Color.DKGRAY
+                    2->Color.YELLOW
+                    3->Color.BLUE
+                    else ->Color.LTGRAY
+                })
 
             }
 
@@ -61,11 +72,11 @@ class SplashActivity : AppCompatActivity() {
 
         })
 
-        viewPager.adapter=PagerAdapter()
 
         indicator.setViewPager(viewPager,viewPager.adapter!!.count)
 
         viewPager.setPageTransformer(true,ZoomOutPageTransformer())
+
     }
 
     fun setPreferense(isAviable:Boolean){

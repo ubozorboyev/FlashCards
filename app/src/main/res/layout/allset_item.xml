@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
@@ -9,17 +10,16 @@
 
     <androidx.cardview.widget.CardView
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_marginStart="70dp"
-        app:cardCornerRadius="4dp"
+        app:cardCornerRadius="@dimen/dpi_4"
+        android:layout_margin="@dimen/dpi_4"
         android:id="@+id/itemCardView"
-        android:layout_marginBottom="6dp"
         android:layout_width="match_parent"
-        android:layout_height="100dp">
+        android:layout_height="@dimen/dpi_120">
 
         <LinearLayout
             android:layout_gravity="bottom"
             android:orientation="vertical"
-            android:padding="8dp"
+            android:padding="@dimen/dpi_8"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -35,15 +35,16 @@
                     android:layout_height="wrap_content"/>
 
                 <TextView
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:id="@+id/cardTitle"
                     android:textStyle="bold"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="@dimen/dpi_8"
                     android:textColor="#000"
-                    android:textSize="20sp"
+                    android:textSize="@dimen/text_18"
                     android:text="@{cardData.name}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
-
 
             </LinearLayout>
 
@@ -51,9 +52,8 @@
             <TextView
                 android:id="@+id/flashCardCount"
                 android:textColor="#000"
-                android:textSize="18sp"
-                android:padding="8dp"
-                android:text=""
+                android:textSize="@dimen/text_14"
+                android:padding="@dimen/dpi_8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 

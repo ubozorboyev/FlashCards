@@ -6,8 +6,8 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:textSize="18sp"
-        android:padding="4dp"
+        android:textSize="@dimen/text_18"
+        android:padding="@dimen/dpi_4"
         android:textColor="#000"
         android:text="@string/edit_text"
         android:layout_width="wrap_content"
@@ -21,8 +21,8 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editText"
-            android:padding="8dp"
-            android:textSize="20sp"
+            android:padding="@dimen/dpi_8"
+            android:textSize="@dimen/text_20"
             android:textColor="#000000"
             android:inputType="text"
             android:selectAllOnFocus="true"

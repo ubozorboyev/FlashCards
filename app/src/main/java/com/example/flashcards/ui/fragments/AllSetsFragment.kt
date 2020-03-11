@@ -3,9 +3,11 @@ package com.example.flashcards.ui.fragments
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.view.*
+import androidx.annotation.AnimatorRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
@@ -13,10 +15,13 @@ import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.divyanshu.draw.widget.Action
 import com.example.flashcards.App
 import com.example.flashcards.R
+import com.example.flashcards.adapters.AllSetAdapter
 import com.example.flashcards.databinding.AllsetsFragmentBinding
 import com.example.flashcards.adapters.AllSetsAdapter
 import com.example.flashcards.gotoCardPage
@@ -30,8 +35,8 @@ import kotlinx.android.synthetic.main.toolbar_layout.view.*
 import java.net.URL
 import javax.inject.Inject
 
-class AllSetsFragment: BaseFragment< AllsetsFragmentBinding>
-    (R.layout.allsets_fragment),NavigationView.OnNavigationItemSelectedListener,View.OnClickListener{
+class AllSetsFragment: BaseFragment<AllsetsFragmentBinding>
+    (R.layout.allsets_fragment),NavigationView.OnNavigationItemSelectedListener{
 
     private val adapter= AllSetsAdapter()
     private  var flashId:Int=0
@@ -66,9 +71,7 @@ class AllSetsFragment: BaseFragment< AllsetsFragmentBinding>
     fun obseravbleAndLiveData(){
 
         viewModel.allFlashCards.observe(viewLifecycleOwner, Observer {
-            adapter.list.clear()
-            adapter.list.addAll(it)
-            adapter.notifyDataSetChanged()
+            adapter.setData(it)
             binding.recyclview.startLayoutAnimation()
         })
 
@@ -83,12 +86,9 @@ class AllSetsFragment: BaseFragment< AllsetsFragmentBinding>
 
     fun conntectionSettings(){
 
-        binding.recyclview.layoutManager=LinearLayoutManager(this.context)
+        binding.recyclview.layoutManager=GridLayoutManager(this.context,2,RecyclerView.VERTICAL,false)
         binding.recyclview.adapter=adapter
-        binding.stickyIndex.bindRecyclerView(binding.recyclview)
         binding.navigationView.setNavigationItemSelectedListener(this)
-        binding.stickyIndex.refresh(converttoIndexList(adapter.list))
-        binding.fastScroller.bindRecyclerView(binding.recyclview)
 
     }
 
@@ -100,7 +100,6 @@ class AllSetsFragment: BaseFragment< AllsetsFragmentBinding>
                 bundle.clear()
                 bundle.putInt("ID",flash.id)
                 bundle.putString("NAME",flash.name)
-                bundle.putInt("COLOR",flash.backgroundColor)
                 gotoCardPage(bundle)
             }
         }
@@ -114,7 +113,7 @@ class AllSetsFragment: BaseFragment< AllsetsFragmentBinding>
                      flashId=it.toInt()
                      bundle.clear()
                      bundle.putInt("ID",flashId)
-                     bundle.putInt("COLOR",flashCardData.backgroundColor)
+                     bundle.putString("NAME",flashCardData.name)
                      gotoCardPage(bundle)
 
                  },{
@@ -143,8 +142,8 @@ class AllSetsFragment: BaseFragment< AllsetsFragmentBinding>
 
         when(p0.itemId){
 
-            R.id.title1, R.id.title2->{
-
+            R.id.allSets, R.id.mostUsed->{
+              binding.recyclview.startLayoutAnimation()
             }
 
             R.id.trash->{
@@ -177,17 +176,15 @@ class AllSetsFragment: BaseFragment< AllsetsFragmentBinding>
                     intent.setData(Uri.parse("https://tuit.uz"))
                     startActivity(intent)
             }
+            R.id.bakupRestore->{
+                findNavController().navigate(R.id.action_allSetsFragment_to_backupFragment)
+            }
         }
 
-        binding.drawerLayout.closeDrawer(GravityCompat.START)
+          binding.drawerLayout.closeDrawer(GravityCompat.START)
 
          return  true
-    }
 
-    override fun onClick(v: View?) {
-        when(v?.id){
-
-        }
     }
 
 }

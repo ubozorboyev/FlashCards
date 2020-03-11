@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="pageMargin">37.5dp</dimen>
+    <dimen name="offset">37.5dp</dimen>
+    <dimen name="pageMarginAndOffset">90dp</dimen>
+
+    <dimen name="margin_card_item">60dp</dimen>
+
+    <dimen name="dpi_250">375dp</dimen>
+    <dimen name="dpi_200">300dp</dimen>
+    <dimen name="dpi_120">180dp</dimen>
+    <dimen name="dpi_100">150dp</dimen>
+    <dimen name="dpi_70">90dp</dimen>
+    <dimen name="dpi_20">30dp</dimen>
+    <dimen name="dpi_10">15dp</dimen>
+    <dimen name="dpi_8">12dp</dimen>
+    <dimen name="dpi_4">6dp</dimen>
+
+
+    <!--text size-->
+
+    <dimen name="text_24">36sp</dimen>
+    <dimen name="text_20">30sp</dimen>
+    <dimen name="text_18">27sp</dimen>
+    <dimen name="text_14">23sp</dimen>
+    <dimen name="text_12">18sp</dimen>
+
+</resources>

@@ -21,6 +21,7 @@ import com.example.flashcards.databinding.CardItemBinding
 import com.example.flashcards.models.*
 import com.example.flashcards.setOnFinishListener
 import jp.wasabeef.recyclerview.animators.holder.AnimateViewHolder
+import java.lang.IndexOutOfBoundsException
 
 class CardAdapter(val context: Context) :RecyclerView.Adapter<CardAdapter.ViewHolder>(){
     val cardList= arrayListOf<CardData>()
@@ -130,11 +131,19 @@ class CardAdapter(val context: Context) :RecyclerView.Adapter<CardAdapter.ViewHo
     }
 
     fun addCards(currentItem:Int,cardData: CardData) {
-        if (cardList.size>0){
-             cardList.add(currentItem,cardData)
-        }else{
+
+        try {
+
+            if (cardList.size>0){
+                cardList.add(currentItem,cardData)
+            }else{
+                cardList.add(cardData)
+            }
+        }catch (e:IndexOutOfBoundsException){
             cardList.add(cardData)
+            e.printStackTrace()
         }
+
         notifyItemInserted(currentItem)
     }
 
