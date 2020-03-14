@@ -1,5 +1,6 @@
 package com.example.flashcards.ui.fragments
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -9,7 +10,10 @@ import com.example.flashcards.App
 import com.example.flashcards.R
 import com.example.flashcards.adapters.LabelAdapter
 import com.example.flashcards.databinding.LabelFragmentBinding
+import com.example.flashcards.models.FlashCardData
 import com.example.flashcards.ui.viewmodel.LabelViewModel
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.toolbar_layout.view.*
 import javax.inject.Inject
 import kotlin.math.log
@@ -19,7 +23,10 @@ class LabelFragment :BaseFragment<LabelFragmentBinding>(R.layout.label_fragment)
 
     @Inject lateinit var viewModel: LabelViewModel
     private val adapter=LabelAdapter()
-
+    private var isImportant=false
+    private var isTodo=false
+    private var isDictionary=false
+    private val bundle=Bundle()
     override fun onCreate(savedInstanceState: Bundle?) {
         App.getComponent().inject(this)
         super.onCreate(savedInstanceState)
@@ -41,14 +48,17 @@ class LabelFragment :BaseFragment<LabelFragmentBinding>(R.layout.label_fragment)
             1->{
                 binding.appBar.actionBarTitle.text="Important"
                 viewModel.loadImpotrant()
+                isImportant=true
             }
             2->{
                 binding.appBar.actionBarTitle.text="Todo"
                 viewModel.loadAllTodo()
+                isTodo=true
             }
             3->{
                 binding.appBar.actionBarTitle.text="Dictionary"
                 viewModel.loadAllDictionary()
+                isDictionary=true
             }
         }
 
@@ -68,15 +78,32 @@ class LabelFragment :BaseFragment<LabelFragmentBinding>(R.layout.label_fragment)
         binding.recyclview.adapter=adapter
 
         adapter.onClickItemListener {
-            val bundle=Bundle()
-            bundle.clear()
-            bundle.putInt("ID",it.id)
-            bundle.putString("NAME",it.name)
-            bundle.putInt("COLOR",it.backgroundColor)
-
-            findNavController().navigate(R.id.action_labelFragment_to_cardPageFragment,bundle)
+            gotoCardPage(it.id,it.name)
         }
 
+        binding.fabButton.setOnClickListener {
+
+         var flashCardData=FlashCardData(0,"Untitel set",0,
+             Color.parseColor("#F7E378"),
+             false,
+             isImportant,
+             isTodo,
+             isDictionary)
+
+            viewModel.dao.addFlashCard(flashCardData).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                     gotoCardPage(it.toInt(),flashCardData.name)
+                },{
+
+                })
+        }
     }
 
+    fun gotoCardPage(id:Int,name:String){
+        bundle.clear()
+        bundle.putInt("ID",id)
+        bundle.putString("NAME",name)
+        findNavController().navigate(R.id.action_labelFragment_to_cardPageFragment,bundle)
+    }
 }

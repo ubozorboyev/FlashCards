@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity(){
             }
         }
         else{
-            Toast.makeText(this,"Permissions granted!",Toast.LENGTH_SHORT).show()
+
         }
     }
 
@@ -86,9 +86,9 @@ class MainActivity : AppCompatActivity(){
 
         val dialog=AlertDialog.Builder(this)
 
-        dialog.setMessage("Ruxsatlar berilmasa ilovani ishga tushirib bolmaydi. Qaytadan urinib koring!")
+        dialog.setMessage("If required permission is not allowed, application doesn't work. Try again :)")
 
-        dialog.setPositiveButton("OK",DialogInterface.OnClickListener { dialog, which ->
+        dialog.setPositiveButton("Ok",DialogInterface.OnClickListener { dialog, which ->
             dialog.dismiss()
             checkPermissons()
         })

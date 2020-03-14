@@ -47,11 +47,11 @@ class PagerAdapter(val appContext:Context) :PagerAdapter(){
 
         imageView.setImageResource(
             when(position){
-                0->R.drawable.welcomto
-                1->R.drawable.add_flshcard
-//                2->
-//                3->
-                else->R.drawable.ic_delete
+                0->R.drawable.page1
+                1->R.drawable.page2
+                2->R.drawable.page3
+                3->R.drawable.page4
+                else->R.drawable.page2
             }
         )
         container.addView(view)

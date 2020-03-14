@@ -34,19 +34,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                       <!-- <br.com.stickyindex.view.StickyIndex
-                            android:id="@+id/stickyIndex"
-                            android:textColor="#B3000000"
-                            android:textSize="36sp"
-                            android:layout_width="@dimen/dpi_70"
-                            app:rowHeight="64dp"
-                            app:stickyWidth="60dp"
-                            android:layout_height="wrap_content"/>-->
-
                         <androidx.recyclerview.widget.RecyclerView
                             android:layout_marginTop="@dimen/dpi_10"
                             android:layoutAnimation="@anim/layout_animation"
@@ -54,17 +41,6 @@
                             tools:listitem="@layout/allset_item"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"/>
-
-                     <!--   <br.com.stickyindex.view.FastScroller
-                            android:id="@+id/fastScroller"
-                            android:layout_gravity="end"
-                            android:layout_marginTop="@dimen/dpi_10"
-                            android:layout_marginBottom="@dimen/dpi_10"
-                            android:layout_width="@dimen/dpi_10"
-                            android:layout_height="match_parent"/>
--->
-
-                    </FrameLayout>
 
 
                     <LinearLayout
@@ -91,9 +67,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/navigationView"

@@ -20,7 +20,7 @@
        app:stpi_showLabels="true"
        app:stpi_indicatorColor="@color/colorAccent"
        app:stpi_circleRadius="@dimen/dpi_10"
-       android:layout_marginBottom="@dimen/pageMargin"
+       android:layout_marginBottom="@dimen/dpi_8"
        app:layout_constraintBottom_toBottomOf="parent"
        android:layout_width="match_parent"
        android:layout_height="wrap_content"/>

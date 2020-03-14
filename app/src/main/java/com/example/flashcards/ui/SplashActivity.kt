@@ -53,10 +53,10 @@ class SplashActivity : AppCompatActivity() {
             ) {
 
                 viewPager.setBackgroundColor(when(position){
-                    0->Color.RED
-                    1->Color.DKGRAY
-                    2->Color.YELLOW
-                    3->Color.BLUE
+                    0->Color.parseColor("#F12626")
+                    1->Color.parseColor("#E1A44B")
+                    2->Color.parseColor("#3D713F")
+                    3->Color.parseColor("#E1A44B")
                     else ->Color.LTGRAY
                 })
 

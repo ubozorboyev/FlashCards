@@ -1,6 +1,7 @@
 package com.example.flashcards.ui.fragments
 
 import android.annotation.SuppressLint
+import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.GradientDrawable
@@ -9,6 +10,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.annotation.AnimatorRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.Observer
@@ -123,17 +125,38 @@ class AllSetsFragment: BaseFragment<AllsetsFragmentBinding>
         }
     }
 
-    @SuppressLint("DefaultLocale")
-    fun converttoIndexList(list: List<FlashCardData>)=list.map { card->card.name.toUpperCase()[0] }
-        .toCollection(ArrayList())
-        .toCharArray()
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.rate_us,menu)
+
+        val searchManager=activity?.getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val searchView=menu.findItem(R.id.search).actionView as SearchView
+           searchView.setSearchableInfo(searchManager.getSearchableInfo(activity?.componentName))
+           searchView.maxWidth=Int.MAX_VALUE
+           searchView.queryHint="Search"
+
+        searchView.setOnQueryTextListener(object :SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                adapter.filter.filter(query)
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                adapter.filter.filter(newText)
+                return false
+            }
+
+        })
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        when(item.itemId){
+            R.id.rateUs->{}
+            R.id.search->{
+            }
+        }
 
         return true
     }
