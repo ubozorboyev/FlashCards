@@ -5,7 +5,7 @@
     <data>
         <variable
             name="cardData"
-            type="com.example.flashcards.models.FlashCardData" />
+            type="ubr.flash.flashcards.models.FlashCardData" />
     </data>
 
     <androidx.cardview.widget.CardView

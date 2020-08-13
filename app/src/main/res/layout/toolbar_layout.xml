@@ -12,40 +12,59 @@
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize">
 
+  <LinearLayout
+      android:gravity="center_vertical"
+     android:orientation="horizontal"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
 
-  <ImageView
-      android:background="?attr/selectableItemBackground"
-      android:scaleType="center"
-      android:id="@+id/imageBack"
-      android:padding="@dimen/dpi_4"
-      android:src="@drawable/ic_arrow_back"
-      android:layout_width="?actionBarSize"
-      android:layout_height="match_parent"/>
+
+    <ImageView
+        android:background="?attr/selectableItemBackground"
+        android:scaleType="center"
+        android:id="@+id/imageBack"
+        android:padding="@dimen/dpi_4"
+        android:src="@drawable/ic_arrow_back"
+        android:layout_width="?actionBarSize"
+        android:layout_height="match_parent"/>
 
     <TextView
         android:textStyle="bold"
         android:id="@+id/actionBarTitle"
         android:visibility="visible"
         android:textColor="#B5000000"
+        android:maxLines="1"
         android:textSize="@dimen/text_18"
         android:padding="@dimen/dpi_8"
         android:gravity="center_vertical"
         android:text="@string/app_name"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="match_parent"/>
 
-  <com.google.android.material.textfield.TextInputEditText
-      android:id="@+id/editTextTitle"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:inputType="text"
-      android:lines="1"
-      android:imeOptions="actionDone"
-      android:hint="@string/enter_flashcard_name"
-      android:maxLines="1"
-      android:padding="@dimen/dpi_4"
-      android:visibility="invisible"
-      tools:text="@string/app_name" />
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/editTextTitle"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:inputType="text"
+        android:lines="1"
+        android:imeOptions="actionDone"
+        android:hint="@string/enter_flashcard_name"
+        android:maxLines="1"
+        android:padding="@dimen/dpi_4"
+        android:visibility="invisible"
+        tools:text="@string/app_name" />
 
+    <ImageView
+        android:padding="8dp"
+        android:layout_gravity="center_vertical"
+        android:visibility="gone"
+        android:id="@+id/starImage"
+        android:src="@drawable/ic_baseline_star_border_24"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+  </LinearLayout>
 
 </androidx.appcompat.widget.Toolbar>

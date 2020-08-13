@@ -8,7 +8,7 @@
     <fragment
         tools:layout="@layout/allsets_fragment"
         android:id="@+id/allSetsFragment"
-        android:name="com.example.flashcards.ui.fragments.AllSetsFragment"
+        android:name="ubr.flash.flashcards.ui.fragments.AllSetsFragment"
         android:label="AllSetsFragment" >
 
         <action
@@ -23,6 +23,9 @@
         <action
             android:id="@+id/action_allSetsFragment_to_backupFragment"
             app:destination="@id/backupFragment" />
+        <action
+            android:id="@+id/action_allSetsFragment_to_starsFragment"
+            app:destination="@id/starsFragment" />
 
 
     </fragment>
@@ -30,7 +33,7 @@
     <fragment
         tools:layout="@layout/card_page_fragment"
         android:id="@+id/cardPageFragment"
-        android:name="com.example.flashcards.ui.fragments.CardPageFragment"
+        android:name="ubr.flash.flashcards.ui.fragments.CardPageFragment"
         android:label="CardPageFragment" >
 
        <!-- <argument android:name="flashId"
@@ -46,13 +49,13 @@
     <fragment
         tools:layout="@layout/trash_fragment"
         android:id="@+id/trashFragment"
-        android:name="com.example.flashcards.ui.fragments.TrashFragment"
+        android:name="ubr.flash.flashcards.ui.fragments.TrashFragment"
         android:label="TrashFragment" />
 
     <fragment
         tools:layout="@layout/label_fragment"
         android:id="@+id/labelFragment"
-        android:name="com.example.flashcards.ui.fragments.LabelFragment"
+        android:name="ubr.flash.flashcards.ui.fragments.LabelFragment"
         android:label="LabelFragment" >
 
         <action
@@ -62,14 +65,23 @@
     <fragment
         tools:layout="@layout/paly_card_fragment"
         android:id="@+id/playCardFragment"
-        android:name="com.example.flashcards.ui.fragments.PlayCardFragment"
+        android:name="ubr.flash.flashcards.ui.fragments.PlayCardFragment"
         android:label="PlayCardFragment" />
 
     <fragment
         tools:layout="@layout/backup_fragment"
         android:id="@+id/backupFragment"
-        android:name="com.example.flashcards.ui.fragments.BackupFragment"
+        android:name="ubr.flash.flashcards.ui.fragments.BackupFragment"
         android:label="BackupFragment" />
+    <fragment
+        android:id="@+id/starsFragment"
+        tools:layout="@layout/stars_fragment"
+        android:name="ubr.flash.flashcards.ui.fragments.StarsFragment"
+        android:label="StarsFragment" >
+        <action
+            android:id="@+id/action_starsFragment_to_cardPageFragment"
+            app:destination="@id/cardPageFragment" />
+    </fragment>
 
 
 </navigation>

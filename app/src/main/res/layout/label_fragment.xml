@@ -11,38 +11,19 @@
         <include layout="@layout/toolbar_layout"
             android:id="@+id/appBar"/>
 
-
-        <androidx.core.widget.NestedScrollView
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/appBar"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_width="0dp"
-            android:layout_height="0dp">
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclview"
+                    android:clipToPadding="false"
+                    android:paddingBottom="@dimen/pageMarginAndOffset"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     android:layoutAnimation="@anim/trash_layout_animation"
                     tools:listitem="@layout/trash_item"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
-
-
-                <LinearLayout
-                    android:elevation="0dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dpi_200"/>
-
-            </LinearLayout>
-
-
-        </androidx.core.widget.NestedScrollView>
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/appBar"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"/>
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

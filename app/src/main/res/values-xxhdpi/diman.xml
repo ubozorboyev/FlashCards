@@ -4,7 +4,7 @@
     <dimen name="offset">37.5dp</dimen>
     <dimen name="pageMarginAndOffset">90dp</dimen>
 
-    <dimen name="margin_card_item">60dp</dimen>
+    <dimen name="margin_card_item">40dp</dimen>
 
     <dimen name="dpi_250">375dp</dimen>
     <dimen name="dpi_200">300dp</dimen>
@@ -19,10 +19,10 @@
 
     <!--text size-->
 
-    <dimen name="text_24">36sp</dimen>
-    <dimen name="text_20">30sp</dimen>
-    <dimen name="text_18">27sp</dimen>
-    <dimen name="text_14">23sp</dimen>
-    <dimen name="text_12">18sp</dimen>
+    <dimen name="text_24">28sp</dimen>
+    <dimen name="text_20">22sp</dimen>
+    <dimen name="text_18">20sp</dimen>
+    <dimen name="text_14">18sp</dimen>
+    <dimen name="text_12">14sp</dimen>
 
 </resources>

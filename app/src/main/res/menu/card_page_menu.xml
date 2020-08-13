@@ -19,5 +19,11 @@
         android:title="Change color"
         android:id="@+id/changeColor"/>
 
+    <!--<item
+        android:id="@+id/selected"
+        android:title="Tanlangan"
+        android:icon="@drawable/ic_baseline_star_border_24"
+        app:showAsAction="always"/>
 
+-->
 </menu>

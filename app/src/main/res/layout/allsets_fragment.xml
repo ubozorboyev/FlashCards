@@ -22,37 +22,20 @@
                 layout="@layout/toolbar_layout"/>
 
 
-            <androidx.core.widget.NestedScrollView
-                android:elevation="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/appBar"
-                android:layout_width="match_parent"
-                android:layout_height="0dp">
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:layout_marginTop="@dimen/dpi_10"
+                            android:clipToPadding="false"
+                            android:paddingBottom="@dimen/pageMarginAndOffset"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/appBar"
                             android:layoutAnimation="@anim/layout_animation"
                             android:id="@+id/recyclview"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
                             tools:listitem="@layout/allset_item"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"/>
-
-
-                    <LinearLayout
-                        android:layout_marginTop="@dimen/dpi_200"
-                        android:elevation="0dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"/>
-
-                </LinearLayout>
-
-
-            </androidx.core.widget.NestedScrollView>
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"/>
 
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
