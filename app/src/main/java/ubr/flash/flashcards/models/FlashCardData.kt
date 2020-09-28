@@ -34,5 +34,6 @@ data class CardData(
     var forText:String?,
     var forImage:String?,
     var backText:String?,
-    var backImage:String?
+    var backImage:String?,
+    var isOpen: Boolean = true
 )

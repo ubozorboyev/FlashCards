@@ -25,6 +25,9 @@
             android:textSize="@dimen/text_20"
             android:textColor="#000000"
             android:inputType="text"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:focusedByDefault="true"
             android:selectAllOnFocus="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

@@ -10,7 +10,6 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.*
 import android.view.animation.OvershootInterpolator
 import android.widget.Button
@@ -50,8 +49,8 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
     (R.layout.card_page_fragment),View.OnClickListener {
 
     private var REQUEST_CODE_DRAW = -1
-    private var TAKE_PHOTO_CODE=-1
-    private var CHOSE_IMAGE_CODE=-1
+    private var TAKE_PHOTO_CODE = -1
+    private var CHOSE_IMAGE_CODE = -1
     private lateinit var toolbar: Toolbar
     private lateinit var adapter: CardAdapter
     private var snapView: View? = null
@@ -79,7 +78,7 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
 
 
         viewModel.flashCard.observe(viewLifecycleOwner, Observer {
-            adapter.setItemBackround(it.backgroundColor)
+            adapter.setItemBackground(it.backgroundColor)
             flashCardData = it
 
             binding.appBar.starImage.setImageResource(if (it.isSelected) R.drawable.ic_star else R.drawable.ic_baseline_star_border_24)
@@ -92,7 +91,7 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
     }
 
 
-    fun setActionBar(){
+    private fun setActionBar(){
 
         binding.appBar.actionBarTitle.visibility=View.GONE
         binding.appBar.editTextTitle.visibility=View.VISIBLE
@@ -119,13 +118,13 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
 
     fun init() {
 
-        val aplhaadapter = AlphaInAnimationAdapter(adapter)
+        val alphaAdapter = AlphaInAnimationAdapter(adapter)
 
         binding.recyclview.layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL,false)
 
         binding.recyclview.itemAnimator = SlideInLeftAnimator(OvershootInterpolator(1f)) as RecyclerView.ItemAnimator?
 
-        binding.recyclview.adapter = ScaleInAnimationAdapter(aplhaadapter) as RecyclerView.Adapter<*>?
+        binding.recyclview.adapter = ScaleInAnimationAdapter(alphaAdapter) as RecyclerView.Adapter<*>?
 
         val snapHelper = LinearSnapHelper()
 
@@ -149,26 +148,28 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
         })
     }
 
-    fun adapterListener(){
+    private fun adapterListener(){
 
-        adapter.textListener=object :(Int,Boolean)->Unit{
+        adapter.textListener = object :(Int,CardData)->Unit{
 
-            override fun invoke(positon: Int,isOpen:Boolean) {
-                val dialog=EditTextDialog(context!!)
+            override fun invoke(positon: Int,cardData: CardData) {
+                val text = if (cardData.isOpen) cardData.forText else cardData.backText
+                val dialog=EditTextDialog(context!!,text)
+
                 dialog.editTextListener {
-                    if (isOpen){
-                        adapter.cardList[positon].forText= it
-                        adapter.cardList[positon].forImage= null
+                    if (cardData.isOpen){
+                        adapter.cardList[positon].forText = it
+                        adapter.cardList[positon].forImage = null
                     }else{
-                        adapter.cardList[positon].backImage= null
-                        adapter.cardList[positon].backText= it
+                        adapter.cardList[positon].backImage = null
+                        adapter.cardList[positon].backText = it
                     }
                     adapter.notifyItemRangeChanged(positon,1)
                 }
             }
         }
 
-        adapter.takePhotoListener=object :(Int)->Unit{
+        adapter.takePhotoListener = object :(Int)->Unit{
             override fun invoke(p1: Int) {
                 val intent=Intent(MediaStore.ACTION_IMAGE_CAPTURE)
                 TAKE_PHOTO_CODE=p1
@@ -214,7 +215,7 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
         requireActivity().onBackPressedDispatcher.addCallback(this){
 
             viewModel.updateCards(adapter.cardList)
-            upateFlashCard()
+            updateFlashCard()
             findNavController().popBackStack()
         }
     }
@@ -242,7 +243,7 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
                             isImportant=flashCardData.isImportant
                             isImportant=flashCardData.isImportant
                         }
-                        upateFlashCard()
+                        updateFlashCard()
                     }
 
                 },flashCardData)
@@ -255,7 +256,7 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
         return super.onOptionsItemSelected(item)
     }
 
-    fun choseColorItemColor(){
+    private fun choseColorItemColor(){
 
         val colorPicker=ColorPicker(activity)
         val button=Button(context)
@@ -279,7 +280,7 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
                     colorPicker.dismissDialog()
                     val dialog=ColorPicerDialog(context!!)
                     dialog.setColorListener {
-                        adapter.setItemBackround(it)
+                        adapter.setItemBackground(it)
                     }
                     dialog.show()
                 }
@@ -289,7 +290,7 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
                 override fun onClick(v: View?, position: Int, color: Int) {
 
                     if (color!=0){
-                        adapter.setItemBackround(color)
+                        adapter.setItemBackground(color)
                     }
                  colorPicker.dismissDialog()
             }
@@ -325,7 +326,7 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
                     viewModel.inserCard(cardData).subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe({
-                            cardData.id=it.toInt()
+                            cardData.id = it.toInt()
                             adapter.addCards(snapPosition,cardData)
                             if (snapPosition >= 0) binding.recyclview.scrollToPosition(snapPosition)
                         },{
@@ -334,14 +335,14 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
             }
 
             R.id.playCard -> {
-                upateFlashCard()
+                updateFlashCard()
                 viewModel.updateCards(adapter.cardList)
-                val bunde=Bundle()
-                bunde.putInt("ID",flashCardData.id)
-                bunde.putString("NAME",flashCardData.name)
-                bunde.putInt("COLOR",flashCardData.backgroundColor)
+                val bundle = Bundle()
+                bundle.putInt("ID",flashCardData.id)
+                bundle.putString("NAME",flashCardData.name)
+                bundle.putInt("COLOR",flashCardData.backgroundColor)
 
-                findNavController().navigate(R.id.action_cardPageFragment_to_playCardFragment,bunde)
+                findNavController().navigate(R.id.action_cardPageFragment_to_playCardFragment,bundle)
             }
             R.id.imageBack->{
                 activity?.onBackPressed()
@@ -364,15 +365,16 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
         if (data != null && resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 REQUEST_CODE_DRAW -> {
+
                     val result = data.getByteArrayExtra("bitmap")
 
                     val bitmap = BitmapFactory.decodeByteArray(result, 0, result!!.size)
-                    saveImage(bitmap,"draw__${System.currentTimeMillis()}",requestCode)
-                 REQUEST_CODE_DRAW=-1
+                    saveImage(bitmap, "draw__${System.currentTimeMillis()}", requestCode)
+                    REQUEST_CODE_DRAW = -1
                 }
                 CHOSE_IMAGE_CODE->{
 
-                    val bitmap=MediaStore.Images.Media.getBitmap(activity?.contentResolver,data.data)
+                    val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver,data.data)
 
                     saveImage(resizeBitmap(bitmap),"image__${System.currentTimeMillis()}",requestCode)
 
@@ -380,7 +382,7 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
                 }
                 TAKE_PHOTO_CODE->{
 
-                    val bitmap=data.extras?.get("data") as Bitmap
+                    val bitmap = data.extras?.get("data") as Bitmap
 
                     saveImage(resizeBitmap(bitmap),"image__${System.currentTimeMillis()}",requestCode)
 
@@ -390,7 +392,7 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
         }
     }
 
-    fun saveImage(bitmap: Bitmap, fileName: String,position:Int) {
+    private fun saveImage(bitmap: Bitmap, fileName: String, position:Int) {
 
         val imageDir =File("${Environment.getExternalStorageDirectory()}/FlashCard/")
 
@@ -405,36 +407,25 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
 
         if (adapter.isOpen){
 
-            adapter.cardList[position].forImage=file.absolutePath
-            adapter.cardList[position].forText=""
+            adapter.cardList[position].forImage = file.absolutePath
+            adapter.cardList[position].forText = ""
         } else {
-            adapter.cardList[position].backImage=file.absolutePath
-            adapter.cardList[position].backText=""
+            adapter.cardList[position].backImage = file.absolutePath
+            adapter.cardList[position].backText = ""
         }
         adapter.notifyItemChanged(position)
     }
 
-    fun resizeBitmap(bitmap: Bitmap):Bitmap{
+    private fun resizeBitmap(bitmap: Bitmap):Bitmap{
 
-        var heigt=bitmap.height.toFloat()
-        var width=bitmap.width.toFloat()
-    /*    var process=bitmap.width.toFloat()/bitmap.height
-
-        if (process==1f || process==0f){
-            process=1.1f
-        }*/
-
-
-            while (heigt>1024 && width>1024){
-                Log.d("tttt","heigt $heigt")
-                Log.d("tttt","with $width")
+        var heigt = bitmap.height.toFloat()
+        var width = bitmap.width.toFloat()
+        while (heigt>1024 && width>1024){
                 heigt *= 0.9f
                 width *= 0.9f
             }
 
-        val resize=Bitmap.createScaledBitmap(bitmap,width.toInt(),heigt.toInt(),true)
-
-        return resize
+        return Bitmap.createScaledBitmap(bitmap,width.toInt(),heigt.toInt(),true)
     }
 
     override fun onDestroy() {
@@ -442,11 +433,11 @@ class CardPageFragment :BaseFragment<CardPageFragmentBinding>
         viewModel.onDestroy()
     }
 
-    fun upateFlashCard(){
-        flashCardData.backgroundColor=adapter.bgColor
-        flashCardData.cardCount=adapter.cardList.size
-        flashCardData.name=title
-        flashCardData.isDelete=isDelete
+    fun updateFlashCard(){
+        flashCardData.backgroundColor = adapter.bgColor
+        flashCardData.cardCount = adapter.cardList.size
+        flashCardData.name = title
+        flashCardData.isDelete = isDelete
         viewModel.updateFlashCardById(flashCardData)
     }
 }

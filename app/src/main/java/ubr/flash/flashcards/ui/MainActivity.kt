@@ -1,6 +1,6 @@
 package ubr.flash.flashcards.ui
 
-import android.content.DialogInterface
+import android.Manifest
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,17 +11,19 @@ import ubr.flash.flashcards.R
 
 class MainActivity : AppCompatActivity(){
 
-    private val PERMISSION_CODE=100
+    private val PERMISSION_CODE = 100
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        checkPermissons()
+        checkPermissions()
     }
 
-    fun checkPermissons(){
-        if (ContextCompat.checkSelfPermission(this,android.Manifest.permission.WRITE_EXTERNAL_STORAGE)!=PackageManager.PERMISSION_GRANTED) {
+    private fun checkPermissions(){
+        if (ContextCompat.checkSelfPermission(this,android.Manifest.permission.WRITE_EXTERNAL_STORAGE)!=PackageManager.PERMISSION_GRANTED
+            || ContextCompat.checkSelfPermission(this,Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
+        ) {
 
             if (ActivityCompat.shouldShowRequestPermissionRationale(
                     this,
@@ -33,8 +35,7 @@ class MainActivity : AppCompatActivity(){
                     arrayOf(
                         android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
                         android.Manifest.permission.READ_EXTERNAL_STORAGE,
-                        android.Manifest.permission.CAMERA,
-                        android.Manifest.permission.INTERNET
+                        android.Manifest.permission.CAMERA
                     ), PERMISSION_CODE
                 )
             } else {
@@ -43,15 +44,12 @@ class MainActivity : AppCompatActivity(){
                     arrayOf(
                         android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
                         android.Manifest.permission.READ_EXTERNAL_STORAGE,
-                        android.Manifest.permission.CAMERA,
-                        android.Manifest.permission.INTERNET
+                        android.Manifest.permission.CAMERA
                     ), PERMISSION_CODE
                 )
             }
         }
-        else{
 
-        }
     }
 
     override fun onRequestPermissionsResult(
@@ -74,20 +72,20 @@ class MainActivity : AppCompatActivity(){
     }
 
 
-    fun showAlert(){
+    private fun showAlert(){
 
         val dialog= androidx.appcompat.app.AlertDialog.Builder(this)
 
         dialog.setMessage("If required permission is not allowed, application doesn't work. Try again :)")
 
-        dialog.setPositiveButton("Ok",DialogInterface.OnClickListener { dialog, which ->
-            dialog.dismiss()
-            checkPermissons()
-        })
-        dialog.setNegativeButton("Cancel",DialogInterface.OnClickListener { dialog, which ->
-            dialog.dismiss()
+        dialog.setPositiveButton("Ok") { d, _ ->
+            d.dismiss()
+            checkPermissions()
+        }
+        dialog.setNegativeButton("Cancel") { d, _ ->
+            d.dismiss()
             finish()
-        })
+        }
         dialog.create().show()
     }
 

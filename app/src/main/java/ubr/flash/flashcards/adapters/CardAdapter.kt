@@ -20,31 +20,31 @@ import java.lang.IndexOutOfBoundsException
 
 class CardAdapter(val context: Context) :RecyclerView.Adapter<CardAdapter.ViewHolder>(){
     val cardList= arrayListOf<CardData>()
-    private val duration=100L
-    var isOpen=true
+    private val duration = 100L
+    var isOpen = true
     @ColorInt
-    var bgColor:Int=Color.parseColor("#F7E378")
-    var textListener:((Int,Boolean)->Unit)?=null
-    var drawListener:((Int)->Unit)?=null
-    var takePhotoListener:((Int)->Unit)?=null
-    var choseImageListener:((Int)->Unit)?=null
-    var deleteItemListener:((CardData)->Unit)?=null
+    var bgColor:Int = Color.parseColor("#F7E378")
+    var textListener:((Int,CardData)->Unit)? = null
+    var drawListener:((Int)->Unit)? = null
+    var takePhotoListener:((Int)->Unit)? = null
+    var choseImageListener:((Int)->Unit)? = null
+    var deleteItemListener:((CardData)->Unit)? = null
 
-    inner class ViewHolder(val itemBinding: CardItemBinding):RecyclerView.ViewHolder(itemBinding.root),AnimateViewHolder{
+    inner class ViewHolder(private val itemBinding: CardItemBinding):RecyclerView.ViewHolder(itemBinding.root),AnimateViewHolder{
 
         fun bind(flashCard: CardData) {
 
-            isOpen=itemBinding.closeCard.visibility==View.VISIBLE
+            isOpen = itemBinding.closeCard.visibility == View.VISIBLE
 
-            itemBindingSetData(itemBinding,flashCard)
+            itemBindingSetData(itemBinding, flashCard)
 
             itemBinding.flashCardText.setOnClickListener {
-                textListener?.invoke(adapterPosition,isOpen)
+                textListener?.invoke(adapterPosition, flashCard)
             }
 
-            itemBinding.plusImage.setOnClickListener{
+            itemBinding.plusImage.setOnClickListener{ image ->
 
-                val menu =PopupMenu(context,it)
+                val menu = PopupMenu(context,image)
 
                 menu.menuInflater.inflate(R.menu.popup_menu,menu.menu)
 
@@ -52,7 +52,7 @@ class CardAdapter(val context: Context) :RecyclerView.Adapter<CardAdapter.ViewHo
                     when(it.itemId){
 
                         R.id.textPop->{
-                            textListener?.invoke(adapterPosition,isOpen)
+                            textListener?.invoke(adapterPosition,flashCard)
                         }
                         R.id.takePhoto->{
                            takePhotoListener?.invoke(adapterPosition)
@@ -83,8 +83,8 @@ class CardAdapter(val context: Context) :RecyclerView.Adapter<CardAdapter.ViewHo
         override fun preAnimateAddImpl(holder: RecyclerView.ViewHolder?) {
 
             itemBinding.root.apply {
-                translationY=-itemBinding.root.height*0.5f
-                alpha=0f
+                translationY = -itemBinding.root.height*0.5f
+                alpha = 0f
             }
         }
 
@@ -144,7 +144,7 @@ class CardAdapter(val context: Context) :RecyclerView.Adapter<CardAdapter.ViewHo
 
     fun animateItem(itemBinding: CardItemBinding,flashCard: CardData) {
 
-        if (isOpen) {
+        if (flashCard.isOpen) {
 
             itemBinding.root.animate().rotationY(-89f)
                 .setDuration(duration)
@@ -153,12 +153,12 @@ class CardAdapter(val context: Context) :RecyclerView.Adapter<CardAdapter.ViewHo
 
                     itemBinding.root.rotationY = -271f
 
-                    isOpen=false
+                    flashCard.isOpen = false
                     itemBindingSetData(itemBinding,flashCard)
 
                     itemBinding.root.animate().rotationY(-360f).setDuration(duration)
                         .setOnFinishListener {
-                            itemBinding.root.rotationY=0f
+                            itemBinding.root.rotationY = 0f
                         }.start()
                 }.start()
 
@@ -172,7 +172,7 @@ class CardAdapter(val context: Context) :RecyclerView.Adapter<CardAdapter.ViewHo
 
                     itemBinding.root.rotationY = 271f
 
-                    isOpen=true
+                    flashCard.isOpen = true
 
                     itemBindingSetData(itemBinding,flashCard)
 
@@ -186,9 +186,9 @@ class CardAdapter(val context: Context) :RecyclerView.Adapter<CardAdapter.ViewHo
 
     fun itemBindingSetData(itemBinding: CardItemBinding,flashCard: CardData){
 
-        if (isOpen){
+        if (flashCard.isOpen){
 
-                itemBinding.flashCardText.text=flashCard.forText
+                itemBinding.flashCardText.text = flashCard.forText
 
             try {
                 itemBinding.itemImageView.setImageURI(Uri.parse(flashCard.forImage))
@@ -214,8 +214,8 @@ class CardAdapter(val context: Context) :RecyclerView.Adapter<CardAdapter.ViewHo
         itemBinding.cardView.setCardBackgroundColor(bgColor)
     }
 
-    fun setItemBackround(color:Int){
-         bgColor=color
+    fun setItemBackground(color:Int){
+         bgColor = color
          notifyDataSetChanged()
     }
 }
