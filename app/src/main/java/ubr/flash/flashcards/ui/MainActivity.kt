@@ -4,9 +4,9 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
@@ -16,9 +16,9 @@ import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import ubr.flash.flashcards.R
 
-class MainActivity : AppCompatActivity(){
+class MainActivity : AppCompatActivity() {
 
-    private val appUpdateManager by lazy{ AppUpdateManagerFactory.create(this)}
+    private val appUpdateManager by lazy { AppUpdateManagerFactory.create(this) }
     private val UPDATE_REQUESTCODE = 101
     private val PERMISSION_CODE = 100
 
@@ -30,9 +30,15 @@ class MainActivity : AppCompatActivity(){
         updateApp()
     }
 
-    private fun checkPermissions(){
-        if (ContextCompat.checkSelfPermission(this,android.Manifest.permission.WRITE_EXTERNAL_STORAGE)!=PackageManager.PERMISSION_GRANTED
-            || ContextCompat.checkSelfPermission(this,Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
+    private fun checkPermissions() {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+            || ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.CAMERA
+            ) != PackageManager.PERMISSION_GRANTED
         ) {
 
             if (ActivityCompat.shouldShowRequestPermissionRationale(
@@ -75,7 +81,7 @@ class MainActivity : AppCompatActivity(){
             }
     }
 
-    private fun updateApp(){
+    private fun updateApp() {
 
         val appUpdateInfoTask = appUpdateManager.appUpdateInfo
 
@@ -85,16 +91,18 @@ class MainActivity : AppCompatActivity(){
 
                 && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
             ) {
-                appUpdateManager.startUpdateFlowForResult(appUpdateInfo,
-                    AppUpdateType.IMMEDIATE,this,UPDATE_REQUESTCODE)
+                appUpdateManager.startUpdateFlowForResult(
+                    appUpdateInfo,
+                    AppUpdateType.IMMEDIATE, this, UPDATE_REQUESTCODE
+                )
             }
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
-        if (requestCode==UPDATE_REQUESTCODE){
-            if (resultCode!= Activity.RESULT_OK){
+        if (requestCode == UPDATE_REQUESTCODE) {
+            if (resultCode != Activity.RESULT_OK) {
                 updateApp()
             }
         }
@@ -121,13 +129,13 @@ class MainActivity : AppCompatActivity(){
         grantResults: IntArray
     ) {
 
-        when(requestCode){
-            PERMISSION_CODE->{
+        when (requestCode) {
+            PERMISSION_CODE -> {
 
-                if (grantResults.isNotEmpty() && grantResults[0]==PackageManager.PERMISSION_GRANTED){
-                    Toast.makeText(this,"Permission was granted, yay! ",Toast.LENGTH_SHORT).show()
-                }else{
-                     showAlert()
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "Permission was granted, yay! ", Toast.LENGTH_SHORT).show()
+                } else {
+                    showAlert()
                 }
             }
         }
@@ -135,9 +143,9 @@ class MainActivity : AppCompatActivity(){
     }
 
 
-    private fun showAlert(){
+    private fun showAlert() {
 
-        val dialog= androidx.appcompat.app.AlertDialog.Builder(this)
+        val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
 
         dialog.setMessage("If required permission is not allowed, application doesn't work. Try again :)")
 
