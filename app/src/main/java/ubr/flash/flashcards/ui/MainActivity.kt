@@ -1,16 +1,25 @@
 package ubr.flash.flashcards.ui
 
 import android.Manifest
+import android.app.Activity
+import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.InstallStatus
+import com.google.android.play.core.install.model.UpdateAvailability
 import ubr.flash.flashcards.R
 
 class MainActivity : AppCompatActivity(){
 
+    private val appUpdateManager by lazy{ AppUpdateManagerFactory.create(this)}
+    private val UPDATE_REQUESTCODE = 101
     private val PERMISSION_CODE = 100
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,6 +27,7 @@ class MainActivity : AppCompatActivity(){
         setContentView(R.layout.activity_main)
 
         checkPermissions()
+        updateApp()
     }
 
     private fun checkPermissions(){
@@ -50,6 +60,59 @@ class MainActivity : AppCompatActivity(){
             }
         }
 
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+
+        appUpdateManager
+            .appUpdateInfo
+            .addOnSuccessListener { appUpdateInfo ->
+                if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
+                    popupSnackbarForCompleteUpdate()
+                }
+            }
+    }
+
+    private fun updateApp(){
+
+        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
+
+        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
+
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+
+                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
+            ) {
+                appUpdateManager.startUpdateFlowForResult(appUpdateInfo,
+                    AppUpdateType.IMMEDIATE,this,UPDATE_REQUESTCODE)
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+        if (requestCode==UPDATE_REQUESTCODE){
+            if (resultCode!= Activity.RESULT_OK){
+                updateApp()
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
+
+    private fun popupSnackbarForCompleteUpdate() {
+        Snackbar.make(
+            window.decorView.rootView,
+            "An update has just been downloaded.",
+            Snackbar.LENGTH_INDEFINITE
+        ).apply {
+            setAction("RESTART") { appUpdateManager.completeUpdate() }
+            setActionTextColor(resources.getColor(R.color.colorPrimaryDark))
+            show()
+        }
     }
 
     override fun onRequestPermissionsResult(

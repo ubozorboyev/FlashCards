@@ -22,20 +22,20 @@
 
     <array name="colorsList">
         <item name="color_1">#F7E378</item>
-        <item name="color_2">#CC72E223</item>
-        <item name="color_3">#B356C7F3</item>
-        <item name="color_4">#CC47DBA0</item>
-        <item name="color_5">#CC0BDB9B</item>
-        <item name="color_6">#CC9C6FDD</item>
-        <item name="color_7">#CCCE73F0</item>
-        <item name="color_8">#CC51BDEE</item>
-        <item name="color_9">#CC3E85F0</item>
-        <item name="color_10">#CCD67143</item>
-        <item name="color_11">#CCC743DF</item>
-        <item name="color_12">#CCD5269A</item>
+        <item name="color_2">#CC72E2</item>
+        <item name="color_3">#B356C7</item>
+        <item name="color_4">#CC47DB</item>
+        <item name="color_5">#CC0BDB</item>
+        <item name="color_6">#CC9C6F</item>
+        <item name="color_7">#CCCE73</item>
+        <item name="color_8">#CC51BD</item>
+        <item name="color_9">#CC3E85</item>
+        <item name="color_10">#CCD671</item>
+        <item name="color_11">#CCC743</item>
+        <item name="color_12">#CCD526</item>
         <item name="color_13">#F5546D</item>
-        <item name="color_14">#CCF15320</item>
-        <item name="color_15">#CCB9A211</item>
+        <item name="color_14">#CCF153</item>
+        <item name="color_15">#CCB9A2</item>
 
     </array>
 

@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = arrayOf(FlashCardData::class,CardData::class),version = 5,exportSchema = false)
+@Database(entities = [FlashCardData::class, CardData::class],version = 5,exportSchema = false)
 abstract class AppDatabase :RoomDatabase(){
 
     abstract fun flashCardDao():FlashCardDao
@@ -14,7 +14,7 @@ abstract class AppDatabase :RoomDatabase(){
 
     companion object{
         @Volatile
-        private lateinit var database:AppDatabase
+        private lateinit var database : AppDatabase
 
         fun initDataBase(context: Context){
             if (!::database.isInitialized){
